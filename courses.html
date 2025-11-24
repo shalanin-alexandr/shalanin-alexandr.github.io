@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курсы - IT-обучение для начинающих</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s ease;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #3498db 0%, #1a1a2e 100%);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+            --gradient: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+            --gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Courses Hero - Уникальный дизайн */
+        .courses-hero {
+            text-align: center;
+            padding: 100px 0 80px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .courses-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .courses-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: white;
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .courses-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        /* Course Filters - Улучшенный дизайн */
+        .course-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid var(--accent-color);
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            color: white;
+        }
+
+        .filter-btn.active::before,
+        .filter-btn:hover::before {
+            left: 0;
+        }
+
+        /* Courses Grid - Уникальный дизайн карточек */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-card.featured {
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.2);
+        }
+
+        .course-header {
+            padding: 30px 30px 20px;
+            position: relative;
+        }
+
+        .course-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-category {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .course-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            line-height: 1.3;
+        }
+
+        .course-description {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .course-content {
+            padding: 0 30px 25px;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item i {
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        .course-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .skill-tag {
+            padding: 6px 12px;
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--accent-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            transition: var(--transition);
+        }
+
+        .skill-tag:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Coming Soon Section - Улучшенный дизайн */
+        .coming-soon {
+            margin-top: 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--text-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: var(--accent-color);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .coming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .coming-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            opacity: 0.8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-card::before {
+            content: 'СКОРО';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .coming-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            border-color: var(--accent-color);
+        }
+
+        .coming-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .coming-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-actions {
+                flex-direction: column;
+            }
+
+            .course-filters {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light" data-accent="blue">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue active" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green" data-color="green" style="background-color: #2ecc71;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="courses-hero">
+                <h1 class="page-title">Наши Курсы</h1>
+                <p>Выбери направление и начни свой путь в IT. Практическое обучение с реальными проектами.</p>
+                
+                <div class="course-filters">
+                    <button class="filter-btn active">Все курсы</button>
+                    <button class="filter-btn">Для начинающих</button>
+                    <button class="filter-btn">Веб-разработка</button>
+                    <button class="filter-btn">Кибербезопасность</button>
+                    <button class="filter-btn">Программирование</button>
+                </div>
+            </section>
+
+            <section class="featured-courses">
+                <div class="courses-grid">
+                    <!-- Кибербезопасность - выделенный курс -->
+                    <div class="course-card featured">
+                        <div class="course-header">
+                            <div class="course-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="course-badge">Популярный</div>
+                            <span class="course-category">Кибербезопасность</span>
+                            <h3 class="course-title">Кибербезопасность для новичков</h3>
+                            <p class="course-description">
+                                Освой основы безопасности информации, научись защищать системы от атак и стань востребованным специалистом.
+                            </p>
+                        </div>
+                        
+                        <div class="course-content">
+                            <div class="course-meta">
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>8 недель</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-signal"></i>
+                                    <span>Начинающий</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-laptop-code"></i>
+                                    <span>4 проекта</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>Сертификат</span>
+                                </div>
+                            </div>
+                            
+                            <div class="course-skills">
+                                <span class="skill-tag">Безопасность</span>
+                                <span class="skill-tag">Сети</span>
+                                <span class="skill-tag">Криптография</span>
+                                <span class="skill-tag">Пентестинг</span>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <a href="cybersecurity-course.html" class="btn btn-primary">
+                                    <i class="fas fa-play-circle"></i> Начать обучение
+                                </a>
+                                <a href="cybersecurity-course.html" class="btn btn-outline">
+                                    <i class="fas fa-info-circle"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Веб-разработка - полноценный курс -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="course-badge">Новый</div>
+                            <span class="course-category">Веб-разработка</span>
+                            <h3 class="course-title">Современная веб-разработка</h3>
+                            <p class="course-description">
+                                Научись создавать современные веб-приложения с использованием HTML, CSS, JavaScript и популярных фреймворков.
+                            </p>
+                        </div>
+                        
+                        <div class="course-content">
+                            <div class="course-meta">
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>10 недель</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-signal"></i>
+                                    <span>Начинающий</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-laptop-code"></i>
+                                    <span>5 проектов</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>Сертификат</span>
+                                </div>
+                            </div>
+                            
+                            <div class="course-skills">
+                                <span class="skill-tag">HTML/CSS</span>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">Git</span>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <a href="webdev-course.html" class="btn btn-primary">
+                                    <i class="fas fa-play-circle"></i> Начать обучение
+                                </a>
+                                <a href="webdev-course.html" class="btn btn-outline">
+                                    <i class="fas fa-info-circle"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Python - полноценный курс -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="course-badge">Бесплатный</div>
+                            <span class="course-category">Программирование</span>
+                            <h3 class="course-title">Python для начинающих</h3>
+                            <p class="course-description">
+                                Изучи один из самых популярных языков программирования. От основ до создания реальных приложений и автоматизации.
+                            </p>
+                        </div>
+                        
+                        <div class="course-content">
+                            <div class="course-meta">
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 недель</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-signal"></i>
+                                    <span>Начинающий</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-laptop-code"></i>
+                                    <span>3 проекта</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>Сертификат</span>
+                                </div>
+                            </div>
+                            
+                            <div class="course-skills">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">ООП</span>
+                                <span class="skill-tag">Django</span>
+                                <span class="skill-tag">Автоматизация</span>
+                                <span class="skill-tag">Data Science</span>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <a href="python-course.html" class="btn btn-primary">
+                                    <i class="fas fa-play-circle"></i> Начать обучение
+                                </a>
+                                <a href="python-course.html" class="btn btn-outline">
+                                    <i class="fas fa-info-circle"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="coming-soon">
+                <h2 class="section-title">Скоро запустим</h2>
+                <div class="coming-grid">
+                    <div class="coming-card">
+                        <div class="coming-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="coming-title">Мобильная разработка</h3>
+                        <p>Создавай приложения для iOS и Android с использованием React Native и Flutter</p>
+                    </div>
+                    
+                    <div class="coming-card">
+                        <div class="coming-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="coming-title">Искусственный интеллект</h3>
+                        <p>Освой машинное обучение, нейросети и компьютерное зрение на Python</p>
+                    </div>
+                    
+                    <div class="coming-card">
+                        <div class="coming-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="coming-title">Data Science</h3>
+                        <p>Анализируй данные, строй прогнозы и визуализируй результаты</p>
+                    </div>
+                    
+                    <div class="coming-card">
+                        <div class="coming-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="coming-title">Разработка игр</h3>
+                        <p>Создавай 2D и 3D игры на Unity и Godot Engine</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
+                        <li><a href="webdev-course.html">Веб-разработка</a></li>
+                        <li><a href="python-course.html">Python</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="courses.html">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Переключение темы
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Проверяем сохраненную тему в localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Переключение акцентного цвета
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        // Проверяем сохраненный цвет в localStorage
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        // Закрываем палитру при клике вне её
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Фильтры курсов
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Убираем активный класс у всех кнопок в этой группе
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Добавляем активный класс текущей кнопке
+                btn.classList.add('active');
+            });
+        });
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за карточками
+        document.querySelectorAll('.course-card, .coming-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Введение в веб-разработку - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s ease;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #3498db 0%, #1a1a2e 100%);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+            --gradient: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+            --gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Lesson Header */
+        .lesson-header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .lesson-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0.05;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .lesson-badge {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .lesson-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .lesson-subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* Lesson Content */
+        .lesson-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .content-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .content-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Analogy Diagrams */
+        .analogy-diagram {
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .diagram-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .restaurant-analogy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .analogy-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .analogy-step i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            width: 40px;
+        }
+
+        .house-analogy {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .house-part {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .house-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        /* Code Preview */
+        .code-preview {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .code-preview pre {
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-comment { color: #6a9955; }
+        .code-tag { color: #569cd6; }
+        .code-attribute { color: #9cdcfe; }
+        .code-value { color: #ce9178; }
+
+        /* Learning Path */
+        .learning-path {
+            background: var(--gradient);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .learning-path h3 {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .path-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .path-step.current {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step-icon {
+            font-size: 1.3rem;
+            width: 30px;
+        }
+
+        /* Quick Quiz */
+        .quick-quiz {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid var(--accent-color);
+        }
+
+        .quiz-title {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Success Story */
+        .success-story {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .success-story blockquote {
+            font-size: 1.1rem;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .success-story cite {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* Lesson Navigation */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn.outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .nav-btn.outline:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .lesson-title {
+                font-size: 2.2rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .house-analogy {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light" data-accent="blue">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue active" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green" data-color="green" style="background-color: #2ecc71;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Lesson Header -->
+            <section class="lesson-header">
+                <div class="lesson-badge">
+                    <i class="fas fa-unlock"></i> БЕСПЛАТНЫЙ УРОК
+                </div>
+                <h1 class="lesson-title">Введение в веб-разработку</h1>
+                <p class="lesson-subtitle">Как устроен интернет и с чего начать свой путь в IT</p>
+                
+                <div class="lesson-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Уровень</div>
+                        <div class="meta-value">Начальный</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Время</div>
+                        <div class="meta-value">45 минут</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Урок</div>
+                        <div class="meta-value">0 из 30</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lesson Content -->
+            <section class="lesson-content">
+                <!-- Introduction -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-play-circle"></i>
+                        Начало пути
+                    </h2>
+                    <p class="content-text">
+                        Вы открываете браузер, вводите адрес, и через долю секунды перед вами появляется красивый сайт. 
+                        Мы делаем это сотни раз в день, но редко задумываемся: а как это работает «под капотом»?
+                    </p>
+                    <p class="content-text">
+                        Если вы решили стать веб-разработчиком, поздравляю! Вы переходите из категории пользователей 
+                        в категорию создателей. В этом уроке мы разберем анатомию интернета и узнаем, из чего строятся 
+                        сайты, не написав пока ни строчки кода.
+                    </p>
+                </div>
+
+                <!-- How Internet Works -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-globe"></i>
+                        1. Как работает Интернет: Простая модель
+                    </h2>
+                    <p class="content-text">
+                        Весь интернет работает по принципу диалога между двумя сторонами. 
+                        Представьте, что вы пришли в ресторан.
+                    </p>
+
+                    <div class="analogy-diagram">
+                        <h3 class="diagram-title">Аналогия с рестораном</h3>
+                        <div class="restaurant-analogy">
+                            <div class="analogy-step">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <strong>Вы (Клиент)</strong> — это ваш браузер (Chrome, Safari и др.). 
+                                    Вы смотрите меню и делаете заказ официанту. В мире веба это называется «Запрос».
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-down"></i>
+                            <div class="analogy-step">
+                                <i class="fas fa-utensils"></i>
+                                <div>
+                                    <strong>Кухня (Сервер)</strong> — это удаленный мощный компьютер, где хранятся файлы сайта. 
+                                    Повара получают заказ, нарезают салаты, жарят мясо. В мире веба сервер обрабатывает данные.
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-down"></i>
+                            <div class="analogy-step">
+                                <i class="fas fa-concierge-bell"></i>
+                                <div>
+                                    <strong>Блюдо (Сайт)</strong> — официант приносит вам готовое блюдо. 
+                                    Сервер отправляет вашему браузеру набор файлов, который превращается в картинку на экране.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="content-text">
+                        Веб-разработчик — это человек, который либо составляет рецепты и оформляет блюда (Frontend), 
+                        либо настраивает работу кухни и оборудования (Backend).
+                    </p>
+                </div>
+
+                <!-- Three Pillars -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-home"></i>
+                        2. Три кита веб-страницы
+                    </h2>
+                    <p class="content-text">
+                        Любой сайт, от простой визитки до Facebook или YouTube, строится на трех базовых технологиях. 
+                        Давайте представим сайт как дом.
+                    </p>
+
+                    <div class="house-analogy">
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <h3>HTML</h3>
+                            <p><strong>HyperText Markup Language</strong> — Это Каркас дома. Бетонные плиты, балки, кирпичные стены.</p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Отвечает за структуру</li>
+                                <li>Определяет заголовки, картинки, кнопки</li>
+                                <li>Без HTML сайта не существует</li>
+                            </ul>
+                        </div>
+
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <h3>CSS</h3>
+                            <p><strong>Cascading Style Sheets</strong> — Это Ремонт и Дизайн. Обои, покраска, мебель.</p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Отвечает за внешний вид</li>
+                                <li>Цвета, расположение, шрифты</li>
+                                <li>Делает сайты красивыми</li>
+                            </ul>
+                        </div>
+
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>JavaScript</h3>
+                            <p><strong>JS</strong> — Это Коммуникации. Электричество, лифт, автоматические ворота.</p>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Оживляет сайт</li>
+                                <li>Взаимодействие и анимация</li>
+                                <li>Лайки, сообщения, формы</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-tools"></i>
+                        3. Ваш главный инструмент: Sublime Text
+                    </h2>
+                    <p class="content-text">
+                        Где пишут сайты? Можно, конечно, писать код в обычном «Блокноте» Windows, 
+                        но это всё равно что копать котлован ложкой — долго и неудобно.
+                    </p>
+                    <p class="content-text">
+                        Программисты используют специальные редакторы кода. Для старта мы рекомендуем Sublime Text.
+                    </p>
+
+                    <div class="analogy-diagram">
+                        <h3 class="diagram-title">Почему именно Sublime Text?</h3>
+                        <div class="restaurant-analogy">
+                            <div class="analogy-step">
+                                <i class="fas fa-palette"></i>
+                                <div>
+                                    <strong>Подсветка синтаксиса</strong> — Редактор раскрашивает код разными цветами. 
+                                    Команды — одним цветом, текст — другим. Это помогает мгновенно видеть структуру и избегать ошибок.
+                                </div>
+                            </div>
+                            <div class="analogy-step">
+                                <i class="fas fa-magic"></i>
+                                <div>
+                                    <strong>Автодополнение</strong> — Вы начинаете писать команду, а редактор сам подсказывает окончание 
+                                    (как Т9, только умнее). Это ускоряет работу в разы.
+                                </div>
+                            </div>
+                            <div class="analogy-step">
+                                <i class="fas fa-bolt"></i>
+                                <div>
+                                    <strong>Легкость</strong> — Он запускается за долю секунды даже на слабых компьютерах.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="content-text">
+                        <strong>Установка:</strong> Скачайте и установите редактор с официального сайта. 
+                        Он бесплатный для ознакомления (иногда будет всплывать окно с просьбой купить, но его можно просто закрыть).
+                    </p>
+
+                    <div style="text-align: center; margin: 25px 0;">
+                        <a href="https://www.sublimetext.com/" class="nav-btn" target="_blank">
+                            <i class="fas fa-download"></i> Скачать Sublime Text
+                        </a>
+                    </div>
+
+                    <p class="content-text">
+                        Установите его к следующему уроку — он нам понадобится!
+                    </p>
+                </div>
+
+                <!-- Career Path -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-road"></i>
+                        4. Куда расти? Направления в веб-разработке
+                    </h2>
+                    <p class="content-text">
+                        Веб-разработка огромна. Когда вы освоите базу (HTML и CSS), перед вами откроются три пути:
+                    </p>
+
+                    <div class="house-analogy">
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <h3>Frontend-разработчик</h3>
+                            <p>Вы создаете «лицо» сайта. Всё, что пользователь видит и на что кликает.</p>
+                            <p><strong>Для тех, кто любит визуальный результат и творчество.</strong></p>
+                        </div>
+
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h3>Backend-разработчик</h3>
+                            <p>Вы работаете с «кухней». Базы данных, сервера, сложные вычисления.</p>
+                            <p><strong>Для тех, кто любит логику, алгоритмы и работу с данными.</strong></p>
+                        </div>
+
+                        <div class="house-part">
+                            <div class="house-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <h3>Fullstack-разработчик</h3>
+                            <p>Универсальный боец, который может создать сервис с нуля.</p>
+                            <p><strong>От верстки кнопки до настройки сервера.</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Path -->
+                <div class="learning-path">
+                    <h3>🚀 Ваш путь в веб-разработке</h3>
+                    <div class="path-steps">
+                        <div class="path-step current">
+                            <div class="step-icon">✅</div>
+                            <div>
+                                <strong>Сейчас:</strong> Понимание основ интернета и веб-технологий
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-icon">➡️</div>
+                            <div>
+                                <strong>Следующий урок:</strong> Ваша первая HTML-страница
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-icon">➡️</div>
+                            <div>
+                                <strong>Через 2 недели:</strong> Стилизация с помощью CSS
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-icon">➡️</div>
+                            <div>
+                                <strong>Через 1 месяц:</strong> Интерактивность на JavaScript
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-icon">➡️</div>
+                            <div>
+                                <strong>Через 3 месяца:</strong> Ваш первый реальный проект
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Story -->
+                <div class="success-story">
+                    <blockquote>
+                        "Я начал с такого же вводного урока 2 года назад. Не верил, что смогу, 
+                        но последовал инструкциям и не пропускал занятия. Сегодня работаю в IT-компании 
+                        и создаю продукты для тысяч пользователей! Помните: каждый эксперт когда-то был новичком."
+                    </blockquote>
+                    <cite>- Алексей, выпускник CodeMaster</cite>
+                </div>
+
+                <!-- Conclusion -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-flag-checkered"></i>
+                        Итог
+                    </h2>
+                    <p class="content-text">
+                        Веб-разработка — это не магия, а конструктор. В следующем уроке мы откроем Sublime Text 
+                        и напишем свои первые строчки кода, создав вашу первую веб-страницу.
+                    </p>
+                    <p class="content-text" style="font-size: 1.2rem; font-weight: 600; color: var(--accent-color); text-align: center; margin-top: 30px;">
+                        Готовы? До встречи на следующем уроке!
+                    </p>
+                </div>
+
+                <!-- Lesson Navigation -->
+                <div class="lesson-navigation">
+                    <a href="webdev-course.html" class="nav-btn outline">
+                        <i class="fas fa-arrow-left"></i> Назад к курсу
+                    </a>
+                    <a href="html5-basics-lesson.html" class="nav-btn">
+                        Следующий урок <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
+                        <li><a href="webdev-course.html">Веб-разработка</a></li>
+                        <li><a href="python-course.html">Python</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="courses.html">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Переключение темы
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Проверяем сохраненную тему в localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Переключение акцентного цвета
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        // Проверяем сохраненный цвет в localStorage
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        // Закрываем палитру при клике вне её
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за секциями контента
+        document.querySelectorAll('.content-section, .learning-path, .success-story').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+
+        // Простая викторина
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const answer = this.getAttribute('data-answer');
+                if (answer === 'structure') {
+                    this.style.backgroundColor = '#2ecc71';
+                    this.style.color = 'white';
+                    setTimeout(() => {
+                        alert('Правильно! HTML действительно строит каркас сайта, как фундамент и стены дома.');
+                    }, 300);
+                } else {
+                    this.style.backgroundColor = '#e74c3c';
+                    this.style.color = 'white';
+                    setTimeout(() => {
+                        alert('Попробуйте еще раз! Вспомните аналогию с домом.');
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
