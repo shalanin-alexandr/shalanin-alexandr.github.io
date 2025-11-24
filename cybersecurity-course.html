@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибербезопасность для новичков - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent-color: #00ff00;
+            --bg-color: #0a0a0a;
+            --text-color: #00ff00;
+            --header-bg: rgba(10, 10, 10, 0.95);
+            --card-bg: #111111;
+            --border-color: #003300;
+            --shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            --transition: all 0.4s ease;
+            --matrix-color: #00ff00;
+            --font-family: 'Courier New', monospace;
+        }
+
+        [data-style="normal"] {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --matrix-color: #3498db;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        [data-style="normal"][data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Matrix background effect - только для хакерского стиля */
+        [data-style="hacker"] .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        [data-style="normal"] .matrix-bg {
+            display: none;
+        }
+
+        .matrix-code {
+            position: absolute;
+            color: var(--matrix-color);
+            font-size: 14px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        [data-style="hacker"] .logo {
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        [data-style="hacker"] nav a {
+            padding: 5px 10px;
+            border: 1px solid transparent;
+        }
+
+        [data-style="hacker"] nav a:hover {
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon, .style-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .style-toggle {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover, .style-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        /* Скрываем переключатель темы в хакерском стиле */
+        [data-style="hacker"] .theme-icon {
+            display: none;
+        }
+
+        [data-style="normal"] .theme-icon {
+            display: block;
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .style-toggle .hacker {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        .style-toggle .normal {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        [data-style="normal"] .style-toggle .hacker {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        [data-style="normal"] .style-toggle .normal {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+            border: 1px solid var(--border-color);
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        [data-style="hacker"] .accent-color:hover {
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Course Hero */
+        .course-hero {
+            text-align: center;
+            padding: 80px 0 60px;
+            position: relative;
+        }
+
+        [data-style="hacker"] .glitch-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: glitch 5s infinite;
+        }
+
+        [data-style="normal"] .glitch-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            color: var(--text-color);
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        .course-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 20px auto 40px;
+            opacity: 0.9;
+        }
+
+        [data-style="hacker"] .hacker-typing {
+            border-right: 2px solid var(--accent-color);
+            animation: blink 1s infinite;
+            padding-right: 5px;
+        }
+
+        [data-style="normal"] .hacker-typing {
+            border-right: none;
+            animation: none;
+            padding-right: 0;
+        }
+
+        @keyframes blink {
+            0%, 100% { border-color: var(--accent-color); }
+            50% { border-color: transparent; }
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Lessons Map */
+        .lessons-map {
+            margin: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: var(--accent-color);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .lesson-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-style="hacker"] .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .lesson-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .lesson-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .lesson-desc {
+            margin-bottom: 15px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .lesson-duration, .lesson-difficulty {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .progress-indicator {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .lesson-card.completed .progress-bar {
+            width: 100%;
+        }
+
+        .lesson-card.in-progress .progress-bar {
+            width: 50%;
+        }
+
+        /* Course Modules */
+        .course-modules {
+            margin: 80px 0;
+        }
+
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .module-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .module-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .module-content {
+            flex: 1;
+        }
+
+        .module-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .module-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .module-lessons {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 80px;
+            padding: 60px 0;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .enroll-btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 15px 40px;
+            border: none;
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-style="hacker"] .enroll-btn {
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        [data-style="normal"] .enroll-btn {
+            border-radius: 6px;
+        }
+
+        .enroll-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: var(--transition);
+        }
+
+        .enroll-btn:hover::before {
+            left: 100%;
+        }
+
+        .enroll-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        [data-style="hacker"] .enroll-btn:hover {
+            box-shadow: 0 0 30px var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            transition: var(--transition);
+        }
+
+        [data-style="hacker"] .social-links a {
+            border-radius: 0;
+        }
+
+        [data-style="normal"] .social-links a {
+            border-radius: 50%;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        [data-style="hacker"] .social-links a:hover {
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .glitch-text {
+                font-size: 2.5rem;
+            }
+
+            .course-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body data-style="hacker" data-theme="dark" data-accent="green">
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="style-toggle" id="styleToggle">
+                    <i class="fas fa-terminal hacker"></i>
+                    <i class="fas fa-desktop normal"></i>
+                </div>
+                
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green active" data-color="green" style="background-color: #00ff00;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="course-hero">
+                <h1 class="glitch-text">КИБЕРБЕЗОПАСНОСТЬ</h1>
+                <p class="hacker-typing">Для новичков: от основ до практического пентестинга</p>
+                
+                <div class="course-stats">
+                    <div class="stat">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">недель обучения</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">урока</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">реальных проекта</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">сертификат</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lessons-map">
+                <h2 class="section-title">Карта уроков</h2>
+                <div class="lessons-grid">
+                    <!-- Урок 1 -->
+                    <div class="lesson-card completed">
+                        <div class="lesson-number">1</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="lesson-title">Введение в кибербезопасность</h3>
+                        <p class="lesson-desc">Основные понятия, термины и принципы безопасности информации.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>45 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Начальный</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Урок 2 -->
+                    <div class="lesson-card completed">
+                        <div class="lesson-number">2</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="lesson-title">Основы сетевой безопасности</h3>
+                        <p class="lesson-desc">TCP/IP, порты, протоколы и методы защиты сетевой инфраструктуры.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>60 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Начальный</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Урок 3 -->
+                    <div class="lesson-card in-progress">
+                        <div class="lesson-number">3</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <h3 class="lesson-title">Криптография и шифрование</h3>
+                        <p class="lesson-desc">Симметричное и асимметричное шифрование, хэширование, цифровые подписи.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>75 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Средний</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Урок 4 -->
+                    <div class="lesson-card">
+                        <div class="lesson-number">4</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="lesson-title">Защита веб-приложений</h3>
+                        <p class="lesson-desc">OWASP Top 10, SQL injection, XSS, CSRF и методы защиты.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>90 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Средний</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Урок 5 -->
+                    <div class="lesson-card">
+                        <div class="lesson-number">5</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h3 class="lesson-title">Поиск уязвимостей</h3>
+                        <p class="lesson-desc">Методологии поиска и эксплуатации уязвимостей в системах.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>80 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Средний</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Урок 6 -->
+                    <div class="lesson-card">
+                        <div class="lesson-number">6</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="lesson-title">Инструменты пентестера</h3>
+                        <p class="lesson-desc">Kali Linux, Metasploit, Nmap, Burp Suite и другие инструменты.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>100 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Продвинутый</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="course-modules">
+                <h2 class="section-title">Модули курса</h2>
+                <div class="modules-list">
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 1: Основы кибербезопасности</h3>
+                            <p class="module-desc">Введение в безопасность информации, терминология, принципы</p>
+                            <div class="module-lessons">Уроки: 1-4</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 2: Сетевая безопасность</h3>
+                            <p class="module-desc">Защита сетевой инфраструктуры, протоколы, межсетевые экраны</p>
+                            <div class="module-lessons">Уроки: 5-8</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 3: Криптография</h3>
+                            <p class="module-desc">Шифрование, хэширование, цифровые подписи, SSL/TLS</p>
+                            <div class="module-lessons">Уроки: 9-12</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 4: Веб-безопасность</h3>
+                            <p class="module-desc">OWASP Top 10, защита веб-приложений, безопасность API</p>
+                            <div class="module-lessons">Уроки: 13-16</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 5: Практический пентестинг</h3>
+                            <p class="module-desc">Методологии тестирования, инструменты, отчетность</p>
+                            <div class="module-lessons">Уроки: 17-20</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 6: Финальный проект</h3>
+                            <p class="module-desc">Полный пентест тестовой инфраструктуры с отчетом</p>
+                            <div class="module-lessons">Уроки: 21-24</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <h2>Готов начать защищать цифровой мир?</h2>
+                <p>Присоединяйся к курсу и получи все необходимые навыки для старта карьеры в кибербезопасности</p>
+                <a href="#" class="enroll-btn">
+                    <i class="fas fa-play-circle"></i> НАЧАТЬ ОБУЧЕНИЕ
+                </a>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="courses.html">Кибербезопасность</a></li>
+                        <li><a href="#">Веб-разработка</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix background effect - только для хакерского стиля
+        function createMatrix() {
+            const matrixBg = document.getElementById('matrixBg');
+            const characters = '01010101010101010101010101010101abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            
+            for (let i = 0; i < 50; i++) {
+                const code = document.createElement('div');
+                code.className = 'matrix-code';
+                code.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                code.style.left = Math.random() * 100 + 'vw';
+                code.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                code.style.animationDelay = Math.random() * 5 + 's';
+                code.style.opacity = Math.random() * 0.5 + 0.1;
+                matrixBg.appendChild(code);
+            }
+        }
+
+        // Создаем матричный эффект только если включен хакерский стиль
+        if (document.body.getAttribute('data-style') === 'hacker') {
+            createMatrix();
+        }
+
+        // Переключение стиля (хакерский/обычный)
+        const styleToggle = document.getElementById('styleToggle');
+        const body = document.body;
+        
+        // Проверяем сохраненный стиль в localStorage
+        const savedStyle = localStorage.getItem('courseStyle') || 'hacker';
+        body.setAttribute('data-style', savedStyle);
+        
+        styleToggle.addEventListener('click', () => {
+            const currentStyle = body.getAttribute('data-style');
+            const newStyle = currentStyle === 'hacker' ? 'normal' : 'hacker';
+            
+            body.setAttribute('data-style', newStyle);
+            localStorage.setItem('courseStyle', newStyle);
+            
+            // При переключении на нормальный стиль, восстанавливаем тему из localStorage
+            if (newStyle === 'normal') {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                body.setAttribute('data-theme', savedTheme);
+            } else {
+                // При переключении на хакерский стиль, устанавливаем тёмную тему
+                body.setAttribute('data-theme', 'dark');
+            }
+        });
+        
+        // Переключение темы (только в обычном стиле)
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Проверяем сохраненную тему в localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (body.getAttribute('data-style') === 'normal') {
+            body.setAttribute('data-theme', savedTheme);
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            // Работает только в обычном стиле
+            if (body.getAttribute('data-style') === 'normal') {
+                const currentTheme = body.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            }
+        });
+        
+        // Переключение акцентного цвета
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        // Проверяем сохраненный цвет в localStorage
+        const savedAccent = localStorage.getItem('accent') || 'green';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        // Закрываем палитру при клике вне её
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за карточками уроков и модулей
+        document.querySelectorAll('.lesson-card, .module-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Современная веб-разработка - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s ease;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #3498db 0%, #1a1a2e 100%);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+            --gradient: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+            --gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Course Hero */
+        .course-hero {
+            text-align: center;
+            padding: 80px 0 60px;
+            position: relative;
+        }
+
+        .course-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0.05;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: var(--accent-color);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .course-hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 20px auto 40px;
+            opacity: 0.9;
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            min-width: 150px;
+            transition: var(--transition);
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Lessons Map */
+        .lessons-map {
+            margin: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: var(--accent-color);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .lesson-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .lesson-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .lesson-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .lesson-desc {
+            margin-bottom: 15px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .lesson-duration, .lesson-difficulty {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .progress-indicator {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .lesson-card.completed .progress-bar {
+            width: 100%;
+        }
+
+        .lesson-card.in-progress .progress-bar {
+            width: 50%;
+        }
+
+        .free-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #2ecc71;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Course Modules */
+        .course-modules {
+            margin: 80px 0;
+        }
+
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .module-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .module-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .module-content {
+            flex: 1;
+        }
+
+        .module-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .module-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .module-lessons {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 80px;
+            padding: 60px 0;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0.03;
+            z-index: 0;
+        }
+
+        .cta-section h2 {
+            position: relative;
+            z-index: 1;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .enroll-btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .enroll-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .course-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light" data-accent="blue">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue active" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green" data-color="green" style="background-color: #2ecc71;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="course-hero">
+                <h1 class="page-title">ВЕБ-РАЗРАБОТКА</h1>
+                <p>Современная веб-разработка: от HTML/CSS до React и Node.js. Создавай интерактивные веб-приложения с нуля.</p>
+                
+                <div class="course-stats">
+                    <div class="stat">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">недель обучения</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">30</div>
+                        <div class="stat-label">уроков</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">реальных проектов</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">сертификат</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lessons-map">
+                <h2 class="section-title">Карта уроков</h2>
+                <div class="lessons-grid">
+                    <!-- Вводное занятие -->
+                    <a href="intro-webdev-lesson.html" class="lesson-card completed">
+                        <div class="free-badge">БЕСПЛАТНО</div>
+                        <div class="lesson-number">0</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h3 class="lesson-title">Введение в веб-разработку</h3>
+                        <p class="lesson-desc">Бесплатное вводное занятие. Узнайте о структуре курса и начните свой путь в веб-разработке.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>45 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Начальный</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 1 -->
+                    <a href="html5-basics-lesson.html" class="lesson-card completed">
+                        <div class="lesson-number">1</div>
+                        <div class="lesson-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h3 class="lesson-title">Основы HTML5</h3>
+                        <p class="lesson-desc">Структура документа, семантические теги, формы и доступность.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>60 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Начальный</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 2 -->
+                    <a href="css3-modern-lesson.html" class="lesson-card completed">
+                        <div class="lesson-number">2</div>
+                        <div class="lesson-icon">
+                            <i class="fab fa-css3-alt"></i>
+                        </div>
+                        <h3 class="lesson-title">Современный CSS3</h3>
+                        <p class="lesson-desc">Flexbox, Grid, анимации и адаптивный дизайн.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>90 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Начальный</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 3 -->
+                    <a href="javascript-basics-lesson.html" class="lesson-card in-progress">
+                        <div class="lesson-number">3</div>
+                        <div class="lesson-icon">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <h3 class="lesson-title">JavaScript основы</h3>
+                        <p class="lesson-desc">Переменные, функции, DOM манипуляции и события.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>120 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Средний</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 4 -->
+                    <a href="responsive-design-lesson.html" class="lesson-card">
+                        <div class="lesson-number">4</div>
+                        <div class="lesson-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="lesson-title">Адаптивный дизайн</h3>
+                        <p class="lesson-desc">Mobile-first подход, медиа-запросы и оптимизация.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>75 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Средний</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 5 -->
+                    <a href="react-basics-lesson.html" class="lesson-card">
+                        <div class="lesson-number">5</div>
+                        <div class="lesson-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h3 class="lesson-title">React основы</h3>
+                        <p class="lesson-desc">Компоненты, состояние, пропсы и хуки.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>150 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Продвинутый</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+
+                    <!-- Урок 6 -->
+                    <a href="nodejs-express-lesson.html" class="lesson-card">
+                        <div class="lesson-number">6</div>
+                        <div class="lesson-icon">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <h3 class="lesson-title">Node.js и Express</h3>
+                        <p class="lesson-desc">Создание серверов, REST API и работа с базами данных.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <i class="far fa-clock"></i>
+                                <span>180 мин</span>
+                            </div>
+                            <div class="lesson-difficulty">
+                                <i class="fas fa-signal"></i>
+                                <span>Продвинутый</span>
+                            </div>
+                        </div>
+                        <div class="progress-indicator">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="course-modules">
+                <h2 class="section-title">Модули курса</h2>
+                <div class="modules-list">
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 1: Основы веб-разработки</h3>
+                            <p class="module-desc">HTML5, CSS3, основы JavaScript и создание первых веб-страниц</p>
+                            <div class="module-lessons">Уроки: 1-6</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 2: Продвинутый JavaScript</h3>
+                            <p class="module-desc">ES6+, асинхронное программирование, работа с API</p>
+                            <div class="module-lessons">Уроки: 7-12</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 3: React разработка</h3>
+                            <p class="module-desc">Компоненты, состояние, маршрутизация и управление состоянием</p>
+                            <div class="module-lessons">Уроки: 13-18</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 4: Backend разработка</h3>
+                            <p class="module-desc">Node.js, Express, базы данных и REST API</p>
+                            <div class="module-lessons">Уроки: 19-24</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 5: Инструменты и DevOps</h3>
+                            <p class="module-desc">Git, Webpack, деплоймент и оптимизация производительности</p>
+                            <div class="module-lessons">Уроки: 25-28</div>
+                        </div>
+                    </div>
+
+                    <div class="module-item">
+                        <div class="module-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">Модуль 6: Финальный проект</h3>
+                            <p class="module-desc">Полноценное веб-приложение с frontend и backend</p>
+                            <div class="module-lessons">Уроки: 29-30</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <h2>Готов создавать современные веб-приложения?</h2>
+                <p>Присоединяйся к курсу и освои востребованные технологии веб-разработки с нуля до профессионального уровня</p>
+                <a href="#" class="enroll-btn">
+                    <i class="fas fa-play-circle"></i> НАЧАТЬ ОБУЧЕНИЕ
+                </a>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
+                        <li><a href="webdev-course.html">Веб-разработка</a></li>
+                        <li><a href="python-course.html">Python</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="courses.html">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Переключение темы
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Проверяем сохраненную тему в localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Переключение акцентного цвета
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        // Проверяем сохраненный цвет в localStorage
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        // Закрываем палитру при клике вне её
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за карточками уроков и модулей
+        document.querySelectorAll('.lesson-card, .module-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
