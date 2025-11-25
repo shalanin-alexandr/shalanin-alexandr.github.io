@@ -1489,6 +1489,119 @@
 
             document.getElementById('scoreMessage').textContent = message;
         }
+
+        // ===== СИСТЕМА СОХРАНЕНИЯ РЕЗУЛЬТАТОВ =====
+
+// ===== СИСТЕМА СОХРАНЕНИЯ РЕЗУЛЬТАТОВ =====
+
+class ProgressManager {
+    constructor() {
+        this.userId = this.getOrCreateUserId();
+        this.loadProgress();
+    }
+    
+    getOrCreateUserId() {
+        let userId = localStorage.getItem('cm_userId');
+        if (!userId) {
+            userId = 'user_' + Date.now();
+            localStorage.setItem('cm_userId', userId);
+        }
+        return userId;
+    }
+    
+    loadProgress() {
+        const saved = localStorage.getItem('cm_progress');
+        console.log('Loading progress in tester:', saved);
+        this.progress = saved ? JSON.parse(saved) : {
+            assignments: {},
+            activity: {},
+            stats: {
+                totalScore: 0,
+                completed: 0,
+                bestScore: 0
+            }
+        };
+    }
+    
+    saveProgress() {
+        console.log('Saving progress:', this.progress);
+        localStorage.setItem('cm_progress', JSON.stringify(this.progress));
+    }
+    
+    // Сохраняем результат выполнения задания
+    saveAssignmentResult(assignmentId, score, assignmentName) {
+        const today = this.getTodayDate();
+        
+        console.log('Saving assignment result for date:', today);
+        
+        // Обновляем активность
+        if (!this.progress.activity[today]) {
+            this.progress.activity[today] = 0;
+        }
+        this.progress.activity[today]++;
+        
+        console.log('Activity for', today, ':', this.progress.activity[today]);
+        
+        // Сохраняем/обновляем задание
+        const existingAssignment = this.progress.assignments[assignmentId];
+        if (!existingAssignment || score > existingAssignment.score) {
+            this.progress.assignments[assignmentId] = {
+                name: assignmentName,
+                score: score,
+                date: today,
+                lastAttempt: new Date().toISOString()
+            };
+        } else {
+            // Обновляем только дату последней попытки
+            this.progress.assignments[assignmentId].lastAttempt = new Date().toISOString();
+        }
+        
+        // Обновляем статистику
+        this.updateStats();
+        
+        // Сохраняем
+        this.saveProgress();
+        
+        return this.progress.assignments[assignmentId];
+    }
+    
+    getTodayDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    updateStats() {
+        const assignments = Object.values(this.progress.assignments);
+        this.progress.stats.completed = assignments.length;
+        this.progress.stats.totalScore = assignments.length > 0 ? 
+            assignments.reduce((sum, a) => sum + a.score, 0) / assignments.length : 0;
+        this.progress.stats.bestScore = assignments.length > 0 ? 
+            Math.max(...assignments.map(a => a.score)) : 0;
+    }
+    
+    // Получаем последние задания для отображения в профиле
+    getRecentAssignments(limit = 4) {
+        return Object.values(this.progress.assignments)
+            .sort((a, b) => new Date(b.lastAttempt) - new Date(a.lastAttempt))
+            .slice(0, limit);
+    }
+    
+    // Получаем данные активности для графика
+    getActivityData() {
+        return this.progress.activity;
+    }
+    
+    // Получаем общую статистику
+    getStats() {
+        return this.progress.stats;
+    }
+}
+
+// Создаем глобальный менеджер прогресса
+const progressManager = new ProgressManager();
     </script>
 </body>
 </html>

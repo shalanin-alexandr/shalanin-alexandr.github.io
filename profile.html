@@ -408,46 +408,70 @@
             opacity: 0.7;
         }
 
-        .graph-grid {
-            display: grid;
-            grid-template-columns: repeat(52, 1fr);
-            gap: 3px;
-            margin-bottom: 10px;
-        }
+    .graph-grid {
+    display: grid;
+    grid-template-columns: repeat(52, 1fr);
+    gap: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+}
 
-        .graph-cell {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            background: var(--border-color);
-            transition: var(--transition);
-        }
+.graph-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: #ebedf0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.03);
+}
 
-        .graph-cell.level-0 { background: var(--border-color); }
-        .graph-cell.level-1 { background: #c6e48b; }
-        .graph-cell.level-2 { background: #7bc96f; }
-        .graph-cell.level-3 { background: #239a3b; }
-        .graph-cell.level-4 { background: #196127; }
+.graph-cell:hover {
+    transform: scale(1.2);
+    border: 1px solid #000;
+}
 
-        .graph-legend {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 10px;
-            font-size: 0.8rem;
-        }
+.graph-cell.level-0 { background: #ebedf0; }
+.graph-cell.level-1 { background: #9be9a8; }
+.graph-cell.level-2 { background: #40c463; }
+.graph-cell.level-3 { background: #30a14e; }
+.graph-cell.level-4 { background: #216e39; }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+[data-theme="dark"] .graph-cell.level-0 { background: #2d333b; }
+[data-theme="dark"] .graph-cell.level-1 { background: #0e4429; }
+[data-theme="dark"] .graph-cell.level-2 { background: #006d32; }
+[data-theme="dark"] .graph-cell.level-3 { background: #26a641; }
+[data-theme="dark"] .graph-cell.level-4 { background: #39d353; }
 
-        .legend-color {
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-        }
+.graph-months {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    width: 100%;
+}
+
+.graph-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 0.8rem;
+    margin-top: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
 
         /* My Projects */
         .projects-list {
@@ -611,6 +635,96 @@
             opacity: 0.7;
         }
 
+/* Стили для аватарки */
+.profile-avatar-container {
+    position: relative;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    border: 5px solid var(--bg-color);
+    box-shadow: var(--shadow);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: var(--transition);
+    border-radius: 50%;
+}
+
+.profile-avatar:hover .avatar-overlay {
+    opacity: 1;
+}
+
+/* Стили для имени пользователя */
+.profile-username {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+/* Стили для описания профиля - обычный серый текст */
+.profile-bio {
+    margin: 0 0 20px 0;
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    max-width: 500px;
+}
+
+/* Уровень */
+.profile-level {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* Дата регистрации */
+#profileJoinDate {
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .header-container {
@@ -692,185 +806,152 @@
     </header>
 
     <main>
-        <div class="container profile-container">
-            <div class="profile-header">
-                <div class="profile-avatar">
-                    <i class="fas fa-user"></i>
+    <div class="container profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar-container">
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="fas fa-user" id="avatarIcon"></i>
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <div class="avatar-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
                 </div>
-                <div class="profile-info">
-                    <h1>Александр Шаланин</h1>
-                    <div class="profile-level">Уровень: Продвинутый</div>
-                    <p>Присоединился: Январь 2024</p>
-                    <div class="profile-stats">
-                        <div class="stat">
-                            <div class="stat-value">12</div>
-                            <div class="stat-label">Проектов</div>
+            </div>
+            <div class="profile-info">
+                <h1 id="profileName">Артём Шаланин</h1>
+                <div class="profile-username" id="profileUsername">@username</div>
+                <div class="profile-bio" id="profileBio"></div>
+                <div class="profile-level" id="profileLevel">Уровень: Новичок</div>
+                <p id="profileJoinDate">Присоединился: Ноябрь 2025</p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Проектов</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Дней активности</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Курс</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-grid">
+            <!-- Остальная часть остается без изменений -->
+            <div class="current-course card">
+                <h2><i class="fas fa-book-open"></i> Текущий курс</h2>
+                <div class="course-progress">
+                    <div class="course-info">
+                        <div class="course-title">Современная Веб-разработка </div>
+                        <div class="course-percent">25%</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                    <div class="course-meta">
+                        <span>Пройдено: 3 из 20 уроков</span>
+                        <span>Осталось: 15 дней</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Активность</h2>
+                <div class="activity-graph">
+                    <p>График активности за последний год:</p>
+                    <div class="graph-container">
+                        <div class="graph-months">
+                            <span>Янв</span>
+                            <span>Фев</span>
+                            <span>Мар</span>
+                            <span>Апр</span>
+                            <span>Май</span>
+                            <span>Июн</span>
+                            <span>Июл</span>
+                            <span>Авг</span>
+                            <span>Сен</span>
+                            <span>Окт</span>
+                            <span>Ноя</span>
+                            <span>Дек</span>
                         </div>
-                        <div class="stat">
-                            <div class="stat-value">156</div>
-                            <div class="stat-label">Дней активности</div>
+                        <div class="graph-grid" id="activityGrid">
+                            <!-- JavaScript заполнит это -->
                         </div>
-                        <div class="stat">
-                            <div class="stat-value">3</div>
-                            <div class="stat-label">Курса</div>
+                        <div class="graph-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #ebedf0"></div>
+                                <span>Меньше</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #c6e48b"></div>
+                                <div class="legend-color" style="background-color: #7bc96f"></div>
+                                <div class="legend-color" style="background-color: #239a3b"></div>
+                                <div class="legend-color" style="background-color: #196127"></div>
+                                <span>Больше</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="profile-grid">
-                <div class="current-course card">
-                    <h2><i class="fas fa-book-open"></i> Текущий курс</h2>
-                    <div class="course-progress">
-                        <div class="course-info">
-                            <div class="course-title">JavaScript для продвинутых</div>
-                            <div class="course-percent">65%</div>
+            <div class="card">
+                <h2><i class="fas fa-tasks"></i> Выполненные задания</h2>
+                <div class="projects-list" id="assignmentsList">
+                    <!-- JavaScript заполнит это -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-star"></i> Навыки</h2>
+                <div class="skills-list">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">HTML/CSS</span>
+                            <span class="skill-percent">90%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 65%"></div>
-                        </div>
-                        <div class="course-meta">
-                            <span>Пройдено: 13 из 20 уроков</span>
-                            <span>Осталось: 7 дней</span>
+                            <div class="progress-fill" style="width: 90%"></div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <h2><i class="fas fa-chart-line"></i> Активность</h2>
-                    <div class="activity-graph">
-                        <p>График активности за последний год (подобно GitHub):</p>
-                        <div class="graph-container">
-                            <div class="graph-months">
-                                <span>Янв</span>
-                                <span>Фев</span>
-                                <span>Мар</span>
-                                <span>Апр</span>
-                                <span>Май</span>
-                                <span>Июн</span>
-                                <span>Июл</span>
-                                <span>Авг</span>
-                                <span>Сен</span>
-                                <span>Окт</span>
-                                <span>Ноя</span>
-                                <span>Дек</span>
-                            </div>
-                            <div class="graph-grid" id="activityGrid">
-                                <!-- JavaScript заполнит это -->
-                            </div>
-                            <div class="graph-legend">
-                                <div class="legend-item">
-                                    <div class="legend-color" style="background-color: #ebedf0"></div>
-                                    <span>Меньше</span>
-                                </div>
-                                <div class="legend-item">
-                                    <div class="legend-color" style="background-color: #c6e48b"></div>
-                                    <div class="legend-color" style="background-color: #7bc96f"></div>
-                                    <div class="legend-color" style="background-color: #239a3b"></div>
-                                    <div class="legend-color" style="background-color: #196127"></div>
-                                    <span>Больше</span>
-                                </div>
-                            </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">JavaScript</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <h2><i class="fas fa-project-diagram"></i> Мои проекты</h2>
-                    <div class="projects-list">
-                        <div class="project-item">
-                            <div class="project-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="project-details">
-                                <h3>Интернет-магазин</h3>
-                                <p>Полнофункциональный магазин на JavaScript</p>
-                            </div>
-                            <div class="project-status status-completed">Завершен</div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Python</span>
+                            <span class="skill-percent">60%</span>
                         </div>
-                        
-                        <div class="project-item">
-                            <div class="project-icon">
-                                <i class="fas fa-gamepad"></i>
-                            </div>
-                            <div class="project-details">
-                                <h3>Игра "Змейка"</h3>
-                                <p>Классическая игра на Canvas</p>
-                            </div>
-                            <div class="project-status status-completed">Завершен</div>
-                        </div>
-                        
-                        <div class="project-item">
-                            <div class="project-icon">
-                                <i class="fas fa-tasks"></i>
-                            </div>
-                            <div class="project-details">
-                                <h3>Менеджер задач</h3>
-                                <p>Приложение для управления задачами</p>
-                            </div>
-                            <div class="project-status status-in-progress">В процессе</div>
-                        </div>
-                        
-                        <div class="project-item">
-                            <div class="project-icon">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
-                            <div class="project-details">
-                                <h3>Мобильное приложение</h3>
-                                <p>Приложение для изучения программирования</p>
-                            </div>
-                            <div class="project-status status-not-started">Не начат</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <h2><i class="fas fa-star"></i> Навыки</h2>
-                    <div class="skills-list">
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">HTML/CSS</span>
-                                <span class="skill-percent">90%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 90%"></div>
-                            </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">React</span>
+                            <span class="skill-percent">40%</span>
                         </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">JavaScript</span>
-                                <span class="skill-percent">75%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">Python</span>
-                                <span class="skill-percent">60%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 60%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">React</span>
-                                <span class="skill-percent">40%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 40%"></div>
-                            </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
     
     <footer>
         <div class="container">
@@ -925,108 +1006,525 @@
     </footer>
 
     <script>
-        // Переключение темы
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
+// Переключение темы
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Проверяем сохраненную тему в localStorage
+const savedTheme = localStorage.getItem('theme') || 'light';
+body.setAttribute('data-theme', savedTheme);
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+});
+
+// Переключение акцентного цвета
+const accentToggle = document.getElementById('accentToggle');
+const accentColors = document.getElementById('accentColors');
+const accentColorElements = document.querySelectorAll('.accent-color');
+
+// Проверяем сохраненный цвет в localStorage
+const savedAccent = localStorage.getItem('accent') || 'blue';
+body.setAttribute('data-accent', savedAccent);
+updateActiveAccent(savedAccent);
+
+accentToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    accentColors.classList.toggle('show');
+});
+
+// Закрываем палитру при клике вне её
+document.addEventListener('click', () => {
+    accentColors.classList.remove('show');
+});
+
+accentColorElements.forEach(colorElement => {
+    colorElement.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const color = colorElement.getAttribute('data-color');
+        body.setAttribute('data-accent', color);
+        localStorage.setItem('accent', color);
+        updateActiveAccent(color);
+        accentColors.classList.remove('show');
+    });
+});
+
+function updateActiveAccent(color) {
+    accentColorElements.forEach(element => {
+        element.classList.remove('active');
+        if (element.getAttribute('data-color') === color) {
+            element.classList.add('active');
+        }
+    });
+}
+
+// ===== СИСТЕМА ДАННЫХ ПОЛЬЗОВАТЕЛЯ =====
+class UserManager {
+    constructor() {
+        this.loadUserData();
+    }
+    
+    loadUserData() {
+        const saved = localStorage.getItem('cm_userData');
+        this.userData = saved ? JSON.parse(saved) : null;
+        return this.userData;
+    }
+    
+    getUserData() {
+        return this.userData;
+    }
+    
+    updateUserData(newData) {
+        if (this.userData) {
+            this.userData = { ...this.userData, ...newData };
+            localStorage.setItem('cm_userData', JSON.stringify(this.userData));
+        }
+    }
+    
+    // Загрузка аватарки
+    saveAvatar(avatarData) {
+        if (this.userData) {
+            this.userData.avatar = avatarData;
+            localStorage.setItem('cm_userData', JSON.stringify(this.userData));
+            console.log('Avatar saved');
+        }
+    }
+    
+    getAvatar() {
+        return this.userData?.avatar || null;
+    }
+}
+
+// ===== СИСТЕМА ПРОГРЕССА ДЛЯ ПРОФИЛЯ =====
+class ProgressManager {
+    constructor() {
+        this.loadProgress();
+    }
+    
+    loadProgress() {
+        const saved = localStorage.getItem('cm_progress');
+        console.log('Loading progress from localStorage:', saved);
         
-        // Проверяем сохраненную тему в localStorage
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', savedTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-        
-        // Переключение акцентного цвета
-        const accentToggle = document.getElementById('accentToggle');
-        const accentColors = document.getElementById('accentColors');
-        const accentColorElements = document.querySelectorAll('.accent-color');
-        
-        // Проверяем сохраненный цвет в localStorage
-        const savedAccent = localStorage.getItem('accent') || 'blue';
-        body.setAttribute('data-accent', savedAccent);
-        updateActiveAccent(savedAccent);
-        
-        accentToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            accentColors.classList.toggle('show');
-        });
-        
-        // Закрываем палитру при клике вне её
-        document.addEventListener('click', () => {
-            accentColors.classList.remove('show');
-        });
-        
-        accentColorElements.forEach(colorElement => {
-            colorElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const color = colorElement.getAttribute('data-color');
-                body.setAttribute('data-accent', color);
-                localStorage.setItem('accent', color);
-                updateActiveAccent(color);
-                accentColors.classList.remove('show');
-            });
-        });
-        
-        function updateActiveAccent(color) {
-            accentColorElements.forEach(element => {
-                element.classList.remove('active');
-                if (element.getAttribute('data-color') === color) {
-                    element.classList.add('active');
+        if (saved) {
+            this.progress = JSON.parse(saved);
+        } else {
+            this.progress = {
+                assignments: {},
+                activity: {},
+                stats: {
+                    totalScore: 0,
+                    completed: 0,
+                    bestScore: 0
                 }
-            });
+            };
+        }
+        return this.progress;
+    }
+    
+    // Получаем последние задания для отображения в профиле
+    getRecentAssignments(limit = 4) {
+        const assignments = Object.values(this.progress.assignments)
+            .sort((a, b) => new Date(b.lastAttempt) - new Date(a.lastAttempt))
+            .slice(0, limit);
+        console.log('Recent assignments:', assignments);
+        return assignments;
+    }
+    
+    // Получаем данные активности для графика
+    getActivityData() {
+        return this.progress.activity || {};
+    }
+    
+    // Получаем общую статистику
+    getStats() {
+        return this.progress.stats || {
+            totalScore: 0,
+            completed: 0,
+            bestScore: 0
+        };
+    }
+}
+
+// ===== ОТОБРАЖЕНИЕ ДАННЫХ В ПРОФИЛЕ =====
+class ProfileManager {
+    constructor() {
+        this.progressManager = new ProgressManager();
+        this.userManager = new UserManager();
+        this.loadProfileData();
+        this.setupAvatarUpload();
+    }
+    
+    loadProfileData() {
+        this.displayUserInfo();
+        this.displayRecentAssignments();
+        this.updateStats();
+        this.generateActivityGraph();
+        this.loadAvatar();
+    }
+    
+    // Отображаем информацию пользователя
+    displayUserInfo() {
+        const userData = this.userManager.getUserData();
+        
+        if (!userData) {
+            console.warn('No user data found');
+            return;
         }
         
-        // Генерация графика активности (подобно GitHub)
-        function generateActivityGraph() {
-            const grid = document.getElementById('activityGrid');
-            const daysInYear = 365;
-            const cellsPerRow = 52; // 52 недели в году
+        // Обновляем имя в заголовке профиля
+        const profileName = document.getElementById('profileName');
+        if (profileName) {
+            profileName.textContent = `${userData.firstName} ${userData.lastName}`;
+        }
+        
+        // Обновляем имя пользователя
+        const profileUsername = document.getElementById('profileUsername');
+        if (profileUsername && userData.username) {
+            profileUsername.textContent = `@${userData.username}`;
+        }
+        
+        // Обновляем описание профиля (био)
+        const profileBio = document.getElementById('profileBio');
+        if (profileBio && userData.bio) {
+            profileBio.textContent = userData.bio;
+        } else if (profileBio) {
+            profileBio.style.display = 'none';
+        }
+        
+        // Обновляем уровень опыта (из регистрации)
+        const profileLevel = document.getElementById('profileLevel');
+        if (profileLevel && userData.experience) {
+            const experienceLabels = {
+                'beginner': 'Начинающий',
+                'intermediate': 'Средний уровень',
+                'advanced': 'Продвинутый'
+            };
+            profileLevel.textContent = `Уровень: ${experienceLabels[userData.experience] || 'Начинающий'}`;
+        }
+        
+        // Обновляем дату регистрации
+        const profileJoinDate = document.getElementById('profileJoinDate');
+        if (profileJoinDate && userData.registrationDate) {
+            const regDate = new Date(userData.registrationDate);
+            const options = { year: 'numeric', month: 'long' };
+            profileJoinDate.textContent = `Присоединился: ${regDate.toLocaleDateString('ru-RU', options)}`;
+        }
+    }
+    
+    // Загрузка и отображение аватарки
+    loadAvatar() {
+        const avatarData = this.userManager.getAvatar();
+        const avatarElement = document.getElementById('profileAvatar');
+        const avatarIcon = document.getElementById('avatarIcon');
+        
+        if (avatarData && avatarElement) {
+            avatarIcon.style.display = 'none';
+            avatarElement.style.backgroundImage = `url(${avatarData})`;
+            avatarElement.style.backgroundSize = 'cover';
+            avatarElement.style.backgroundPosition = 'center';
+        }
+    }
+    
+    // Настройка загрузки аватарки
+    setupAvatarUpload() {
+        const avatarElement = document.getElementById('profileAvatar');
+        const fileInput = document.getElementById('avatarUpload');
+        
+        if (avatarElement && fileInput) {
+            // Убедимся, что обработчики не дублируются
+            avatarElement.removeEventListener('click', this.handleAvatarClick);
+            fileInput.removeEventListener('change', this.handleFileSelect);
             
-            for (let i = 0; i < daysInYear; i++) {
-                const cell = document.createElement('div');
-                // Случайный уровень активности для демонстрации
-                const activityLevel = Math.floor(Math.random() * 5);
-                cell.className = `graph-cell level-${activityLevel}`;
-                
-                // Добавляем tooltip с датой
-                const date = new Date();
-                date.setDate(date.getDate() - (daysInYear - i));
-                cell.title = `${date.toLocaleDateString('ru-RU')}: ${activityLevel} активности`;
-                
-                grid.appendChild(cell);
+            this.handleAvatarClick = () => {
+                console.log('Avatar clicked');
+                fileInput.click();
+            };
+            
+            this.handleFileSelect = (e) => {
+                console.log('File selected');
+                const file = e.target.files[0];
+                if (file) {
+                    this.handleAvatarUpload(file);
+                }
+            };
+            
+            avatarElement.addEventListener('click', this.handleAvatarClick);
+            fileInput.addEventListener('change', this.handleFileSelect);
+        }
+    }
+    
+    // Обработка загрузки аватарки
+    handleAvatarUpload(file) {
+        console.log('Handling avatar upload:', file);
+        
+        // Проверяем тип файла
+        if (!file.type.startsWith('image/')) {
+            this.showNotification('Пожалуйста, выберите изображение!');
+            return;
+        }
+        
+        // Проверяем размер файла (максимум 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            this.showNotification('Размер файла не должен превышать 5MB!');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const avatarData = e.target.result;
+            this.userManager.saveAvatar(avatarData);
+            this.loadAvatar();
+            this.showNotification('Аватарка успешно обновлена!');
+        };
+        reader.onerror = () => {
+            this.showNotification('Ошибка при загрузке файла!');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    // Отображаем последние задания
+    displayRecentAssignments() {
+        const container = document.getElementById('assignmentsList');
+        const assignments = this.progressManager.getRecentAssignments(4);
+        
+        console.log('Assignments to display:', assignments);
+        
+        if (assignments.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px; opacity: 0.7;">
+                    <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <p>Пока нет выполненных заданий</p>
+                    <p style="font-size: 0.8rem;">Проверьте свои работы в тестировщике!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = assignments.map(assignment => `
+            <div class="project-item">
+                <div class="project-icon" style="background: ${this.getScoreColor(assignment.score)}">
+                    <i class="fas fa-file-code"></i>
+                </div>
+                <div class="project-details">
+                    <h3>${this.truncateText(assignment.name, 30)}</h3>
+                    <p>${this.formatDate(assignment.date)} • ${assignment.score}%</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Обновляем статистику в профиле
+    updateStats() {
+        const stats = this.progressManager.getStats();
+        const assignments = this.progressManager.getRecentAssignments();
+        const activityData = this.progressManager.getActivityData();
+        
+        console.log('Stats:', stats);
+        console.log('Activity data:', activityData);
+        
+        // Обновляем количество проектов (выполненных заданий)
+        const projectsCount = document.querySelector('.stat-value:nth-child(1)');
+        if (projectsCount) projectsCount.textContent = assignments.length;
+        
+        // Обновляем дни активности (количество дней с активностью)
+        const activityDays = Object.keys(activityData).length;
+        const activityCount = document.querySelector('.stat-value:nth-child(2)');
+        if (activityCount) activityCount.textContent = activityDays;
+        
+        // Обновляем количество курсов (пока статично 1)
+        const coursesCount = document.querySelector('.stat-value:nth-child(3)');
+        if (coursesCount) coursesCount.textContent = '1';
+    }
+    
+    // Генерируем график активности с реальными данными
+    generateActivityGraph() {
+        const grid = document.getElementById('activityGrid');
+        const activityData = this.progressManager.getActivityData();
+        
+        console.log('Generating activity graph with data:', activityData);
+        
+        // Очищаем grid
+        grid.innerHTML = '';
+        
+        // Создаем данные за последний год (365 дней) ВКЛЮЧАЯ СЕГОДНЯШНИЙ ДЕНЬ
+        const today = new Date();
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() - 364); // 364 дня назад + сегодня = 365 дней
+        
+        console.log('Date range:', startDate.toDateString(), 'to', today.toDateString());
+        
+        // Создаем массив всех дней
+        const allDays = [];
+        const currentDate = new Date(startDate);
+        
+        for (let i = 0; i < 365; i++) {
+            const dateStr = this.formatDateForActivity(currentDate);
+            const activityCount = activityData[dateStr] || 0;
+            
+            allDays.push({
+                date: new Date(currentDate),
+                dateStr: dateStr,
+                count: activityCount,
+                level: this.getActivityLevel(activityCount)
+            });
+            
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        console.log('Generated days:', allDays.length);
+        console.log('First day:', allDays[0].dateStr, 'Last day:', allDays[364].dateStr);
+        
+        // Отображаем клетки в формате GitHub (7 строк, 52 колонки)
+        // Но сначала сгруппируем по неделям
+        const weeks = [];
+        for (let i = 0; i < 52; i++) {
+            const weekStart = i * 7;
+            weeks.push(allDays.slice(weekStart, weekStart + 7));
+        }
+        
+        // Добавляем последнюю неделю (53-я неделя для оставшихся дней)
+        const remainingDays = allDays.slice(52 * 7);
+        if (remainingDays.length > 0) {
+            weeks.push(remainingDays);
+        }
+        
+        // Заполняем grid (теперь идем по строкам, потом по колонкам)
+        for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+            for (let week = 0; week < weeks.length; week++) {
+                if (weeks[week] && weeks[week][dayOfWeek]) {
+                    const cellData = weeks[week][dayOfWeek];
+                    const cellElement = document.createElement('div');
+                    cellElement.className = `graph-cell level-${cellData.level}`;
+                    cellElement.title = `${cellData.date.toLocaleDateString('ru-RU')}: ${cellData.count} активности`;
+                    cellElement.setAttribute('data-date', cellData.dateStr);
+                    cellElement.setAttribute('data-count', cellData.count);
+                    grid.appendChild(cellElement);
+                } else {
+                    // Добавляем пустую клетку для выравнивания
+                    const cellElement = document.createElement('div');
+                    cellElement.className = 'graph-cell level-0';
+                    grid.appendChild(cellElement);
+                }
             }
         }
         
-        // Инициализация графика при загрузке страницы
-        document.addEventListener('DOMContentLoaded', generateActivityGraph);
+        console.log('Generated', grid.children.length, 'activity cells');
         
-        // Анимация появления элементов при скролле
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // Обновляем CSS grid для правильного отображения
+        grid.style.gridTemplateColumns = `repeat(${weeks.length}, 1fr)`;
+    }
+    
+    formatDateForActivity(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    getActivityLevel(count) {
+        if (count === 0) return 0;
+        if (count === 1) return 1;
+        if (count === 2) return 2;
+        if (count === 3) return 3;
+        return 4;
+    }
+    
+    getScoreColor(score) {
+        if (score >= 90) return '#27ae60';
+        if (score >= 70) return '#f39c12';
+        if (score >= 50) return '#e67e22';
+        return '#e74c3c';
+    }
+    
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ru-RU');
+    }
+    
+    truncateText(text, maxLength) {
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + '...';
+    }
+    
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        `;
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-check-circle"></i>
+                <div>${message}</div>
+            </div>
+        `;
         
-        // Наблюдаем за карточками
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(card);
-        });
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+}
+
+// Анимация появления элементов при скролле
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Наблюдаем за карточками
+document.querySelectorAll('.card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(card);
+});
+
+// Добавляем CSS анимацию для уведомлений
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Инициализируем профиль при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Profile page loaded');
+    new ProfileManager();
+});
     </script>
 </body>
 </html>

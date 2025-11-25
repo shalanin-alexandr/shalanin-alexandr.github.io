@@ -449,7 +449,7 @@
             height: 40px;
             background-color: var(--accent-color);
             color: white;
-            border-radius: 50%;
+            borderRadius: 50%;
             transition: var(--transition);
         }
 
@@ -479,6 +479,176 @@
             color: var(--accent-color);
         }
 
+        /* Modal Styles - обновленные */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.modal.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+    margin: 20px 0;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 1;
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+}
+
+.modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.modal-title h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.modal-title p {
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    font-family: inherit;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-switch {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.85rem;
+}
+
+.form-switch a {
+    color: var(--accent-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-switch a:hover {
+    text-decoration: underline;
+}
+
+.username-hint {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.experience-hint {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 4px;
+    font-style: italic;
+}
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -512,6 +682,14 @@
 
             .section-title {
                 font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 25px;
             }
         }
     </style>
@@ -558,6 +736,86 @@
             </div>
         </div>
     </header>
+
+    <!-- Welcome Modal -->
+<div class="modal" id="welcomeModal">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="modal-title">
+            <h2>Добро пожаловать в CodeMaster!</h2>
+            <p>Заполните информацию о себе, чтобы начать обучение</p>
+        </div>
+        
+        <form id="registrationForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Имя *</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Фамилия *</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Имя пользователя *</label>
+                <input type="text" id="username" name="username" required>
+                <div class="username-hint">Будет отображаться в вашем профиле и комментариях</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="birthDate">Дата рождения</label>
+                <input type="date" id="birthDate" name="birthDate">
+            </div>
+            
+            <div class="form-group">
+                <label for="country">Страна</label>
+                <select id="country" name="country">
+                    <option value="">Выберите страну</option>
+                    <option value="ru">Россия</option>
+                    <option value="kz">Казахстан</option>
+                    <option value="by">Беларусь</option>
+                    <option value="ua">Украина</option>
+                    <option value="other">Другая</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">О себе</label>
+                <textarea id="bio" name="bio" placeholder="Расскажите немного о себе, своих интересах и целях в программировании..."></textarea>
+                <div class="username-hint">Это описание будет отображаться в вашем профиле</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience">Уровень опыта в программировании *</label>
+                <select id="experience" name="experience" required>
+                    <option value="">Выберите уровень</option>
+                    <option value="beginner">Начинающий (0-6 месяцев)</option>
+                    <option value="intermediate">Средний (6 месяцев - 2 года)</option>
+                    <option value="advanced">Продвинутый (2+ года)</option>
+                </select>
+                <div class="experience-hint">Этот уровень будет отображаться в вашем профиле</div>
+            </div>
+            
+            <button type="submit" class="form-submit">
+                <i class="fas fa-user-plus"></i> Начать обучение
+            </button>
+            
+            <div class="form-switch">
+                Уже есть аккаунт? <a href="#" id="loginSwitch">Войти</a>
+            </div>
+        </form>
+    </div>
+</div>
 
     <section class="hero">
         <div class="container hero-content">
@@ -714,6 +972,137 @@
     </footer>
 
     <script>
+        // ===== СИСТЕМА РЕГИСТРАЦИИ =====
+        class UserManager {
+            constructor() {
+                this.loadUserData();
+            }
+            
+            loadUserData() {
+                const saved = localStorage.getItem('cm_userData');
+                this.userData = saved ? JSON.parse(saved) : null;
+                return this.userData;
+            }
+            
+            saveUserData(userData) {
+                // Добавляем дату регистрации
+                userData.registrationDate = new Date().toISOString();
+                userData.lastLogin = new Date().toISOString();
+                
+                this.userData = userData;
+                localStorage.setItem('cm_userData', JSON.stringify(userData));
+                console.log('User data saved:', userData);
+            }
+            
+            updateLastLogin() {
+                if (this.userData) {
+                    this.userData.lastLogin = new Date().toISOString();
+                    localStorage.setItem('cm_userData', JSON.stringify(this.userData));
+                }
+            }
+            
+            isRegistered() {
+                return this.userData !== null;
+            }
+            
+            getUserData() {
+                return this.userData;
+            }
+        }
+
+        // Создаем менеджер пользователей
+        const userManager = new UserManager();
+
+        // ===== УПРАВЛЕНИЕ МОДАЛЬНЫМ ОКНОМ =====
+        const welcomeModal = document.getElementById('welcomeModal');
+        const modalClose = document.getElementById('modalClose');
+        const registrationForm = document.getElementById('registrationForm');
+        const loginSwitch = document.getElementById('loginSwitch');
+
+        // Показываем модальное окно, если пользователь не зарегистрирован
+        if (!userManager.isRegistered()) {
+            setTimeout(() => {
+                welcomeModal.classList.add('active');
+            }, 1000);
+        }
+
+        // Закрытие модального окна
+        modalClose.addEventListener('click', () => {
+            welcomeModal.classList.remove('active');
+        });
+
+        // Закрытие при клике вне модального окна
+        welcomeModal.addEventListener('click', (e) => {
+            if (e.target === welcomeModal) {
+                welcomeModal.classList.remove('active');
+            }
+        });
+
+        // Обработка формы регистрации
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(registrationForm);
+            const userData = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                username: formData.get('username'),
+                birthDate: formData.get('birthDate'),
+                country: formData.get('country'),
+                bio: formData.get('bio'),
+                experience: formData.get('experience')
+            };
+            
+            // Сохраняем данные пользователя
+            userManager.saveUserData(userData);
+            
+            // Закрываем модальное окно
+            welcomeModal.classList.remove('active');
+            
+            // Показываем уведомление об успешной регистрации
+            showNotification('Регистрация завершена! Добро пожаловать в CodeMaster!');
+        });
+
+        // Переключение на форму входа (пока просто заглушка)
+        loginSwitch.addEventListener('click', (e) => {
+            e.preventDefault();
+            showNotification('Функция входа будет доступна в следующем обновлении!');
+        });
+
+        // Функция показа уведомлений
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--accent-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-check-circle"></i>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // ===== ОСНОВНОЙ СКРИПТ =====
+        
         // Переключение темы
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
@@ -792,6 +1181,22 @@
             card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(card);
         });
+
+        // Добавляем CSS анимацию для уведомлений
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
