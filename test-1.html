@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Основы HTML и CSS - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s ease;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #3498db 0%, #1a1a2e 100%);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+            --gradient: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+            --gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Test Header */
+        .test-header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .test-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0.05;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .test-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .test-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .test-subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .test-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* Test Content */
+        .test-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .test-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .content-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .content-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            margin: 25px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            padding: 20px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option-number {
+            width: 35px;
+            height: 35px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Practical Task */
+        .task-requirements {
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px dashed var(--accent-color);
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .requirement-item i {
+            color: var(--accent-color);
+        }
+
+        .step-by-step {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .step {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Results Section */
+        .results-section {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 20px 0;
+        }
+
+        .results-message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .test-title {
+                font-size: 2.2rem;
+            }
+
+            .test-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .test-section {
+                padding: 25px;
+            }
+        }
+
+        /* Additional styles for test */
+        .code-preview {
+            background: #2b2b2b;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .code-preview pre {
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-comment { color: #6a9955; }
+        .code-tag { color: #569cd6; }
+        .code-attribute { color: #9cdcfe; }
+        .code-value { color: #ce9178; }
+        .code-css-selector { color: #d7ba7d; }
+        .code-css-property { color: #9cdcfe; }
+        .code-css-value { color: #ce9178; }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn.outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .nav-btn.outline:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+    </style>
+</head>
+<body data-theme="light" data-accent="blue">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="tester.html">Тестировщик</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="aboutus.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue active" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green" data-color="green" style="background-color: #2ecc71;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Test Header -->
+            <section class="test-header">
+                <div class="test-badge">
+                    <i class="fas fa-graduation-cap"></i> ТЕСТОВОЕ ЗАДАНИЕ
+                </div>
+                <h1 class="test-title">Проверка знаний: HTML и CSS</h1>
+                <p class="test-subtitle">Теоретическая часть и практическое задание по пройденным урокам</p>
+                
+                <div class="test-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Уровень сложности</div>
+                        <div class="meta-value">Начальный</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Время выполнения</div>
+                        <div class="meta-value">60-90 минут</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Баллы</div>
+                        <div class="meta-value">7 вопросов + практика</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Test Content -->
+            <section class="test-content">
+                <!-- Introduction -->
+                <div class="test-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Инструкция по выполнению
+                    </h2>
+                    <p class="content-text">
+                        Это тестовое задание проверяет ваше понимание основ HTML и CSS, пройденных в первых трех уроках. 
+                        Тест состоит из двух частей:
+                    </p>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <strong>Теоретическая часть</strong> - 7 вопросов с выбором ответа
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <strong>Практическое задание</strong> - создание стилизованной веб-страницы
+                        </div>
+                    </div>
+
+                    <p class="content-text">
+                        <strong>Важно:</strong> Для практической части вам понадобится Sublime Text и браузер для проверки результата.
+                    </p>
+                </div>
+
+                <!-- Theoretical Part -->
+                <div class="test-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-pencil-alt"></i>
+                        Часть 1: Теоретические вопросы
+                    </h2>
+                    <p class="content-text">
+                        Выберите правильный ответ для каждого вопроса. После завершения вы сможете проверить свои результаты.
+                    </p>
+
+                    <!-- Question 1 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">1. Какой тег используется для создания самого важного заголовка на странице?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>&lt;header&gt;</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">B</div>
+                                <div>&lt;title&gt;</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">C</div>
+                                <div>&lt;h1&gt;</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>&lt;head&gt;</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">2. Какой способ подключения CSS является наиболее предпочтительным для больших проектов?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>Встроенные стили (inline)</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">B</div>
+                                <div>Внутренние стили (internal)</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">C</div>
+                                <div>Внешние стили (external)</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>Все способы одинаково хороши</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">3. Что такое блочная модель в CSS?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>Способ создания блоков на странице</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">B</div>
+                                <div>Система отступов: content, padding, border, margin</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">C</div>
+                                <div>Метод верстки с помощью блоков</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>Тип display: block</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">4. Какой селектор используется для выбора элемента с классом "button"?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>#button</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">B</div>
+                                <div>.button</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">C</div>
+                                <div>button</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>&lt;button&gt;</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">5. Что делает псевдокласс :hover?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>Скрывает элемент</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">B</div>
+                                <div>Применяет стили при наведении курсора</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">C</div>
+                                <div>Делает элемент полупрозрачным</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>Изменяет размер элемента</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 6 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">6. Какой атрибут HTML используется для создания ссылки?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>src</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">B</div>
+                                <div>href</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">C</div>
+                                <div>link</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>url</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 7 -->
+                    <div class="quiz-container">
+                        <div class="quiz-question">7. В чем основное различие между ID и Class в HTML?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">A</div>
+                                <div>ID для текста, Class для картинок</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">B</div>
+                                <div>ID для CSS, Class для JavaScript</div>
+                            </div>
+                            <div class="quiz-option" data-correct="true">
+                                <div class="option-number">C</div>
+                                <div>ID уникален, Class можно использовать много раз</div>
+                            </div>
+                            <div class="quiz-option" data-correct="false">
+                                <div class="option-number">D</div>
+                                <div>Разницы нет</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" id="checkTheory">
+                        <i class="fas fa-check-circle"></i> Проверить теоретическую часть
+                    </button>
+                </div>
+
+                <!-- Practical Part -->
+                <div class="test-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-laptop-code"></i>
+                        Часть 2: Практическое задание
+                    </h2>
+                    <p class="content-text">
+                        Создайте веб-страницу "Мое хобби" с использованием всех пройденных технологий.
+                    </p>
+
+                    <div class="task-requirements">
+                        <h3 style="color: var(--accent-color); margin-bottom: 20px;">📋 Требования к проекту:</h3>
+                        
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Создать файл <code>hobby.html</code> с правильной структурой HTML5</span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Создать файл <code>styles.css</code> и подключить его к HTML</span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Использовать семантические теги: <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code></span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Добавить навигационное меню с 3-4 пунктами</span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Включить заголовки <code>&lt;h1&gt;</code>-<code>&lt;h3&gt;</code></span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Добавить изображение вашего хобби</span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Создать список преимуществ хобби</span>
+                        </div>
+                        <div class="requirement-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Использовать классы и ID для стилизации</span>
+                        </div>
+                    </div>
+
+                    <div class="step-by-step">
+                        <h3 style="color: var(--accent-color); margin-bottom: 20px;">🚀 Пошаговая инструкция:</h3>
+                        
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <strong>Создайте структуру проекта</strong><br>
+                            Создайте папку "my-hobby-site" с файлами <code>hobby.html</code> и <code>styles.css</code>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <strong>Настройте базовую HTML-структуру</strong><br>
+                            Добавьте doctype, html, head с мета-тегами и подключением CSS, body
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <strong>Создайте шапку сайта</strong><br>
+                            Добавьте <code>&lt;header&gt;</code> с навигацией и главным заголовком
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <strong>Разработайте основное содержимое</strong><br>
+                            В <code>&lt;main&gt;</code> добавьте несколько секций с информацией о хобби
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">5</span>
+                            <strong>Примените CSS-стили</strong><br>
+                            Используйте цвета, шрифты, отступы, hover-эффекты для красивого оформления
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">6</span>
+                            <strong>Протестируйте результат</strong><br>
+                            Перейдите во вкладку "Тестировщик", загрузите файлы и проверьте свой результат!
+                        </div>
+                    </div>
+
+                    <div class="code-preview">
+                        <pre><code class="code-comment">&lt;!-- Пример структуры HTML --&gt;</code>
+<code class="code-tag">&lt;!DOCTYPE html&gt;</code>
+<code class="code-tag">&lt;html lang=</code><code class="code-value">"ru"</code><code class="code-tag">&gt;</code>
+<code class="code-tag">&lt;head&gt;</code>
+    <code class="code-tag">&lt;meta charset=</code><code class="code-value">"UTF-8"</code><code class="code-tag">&gt;</code>
+    <code class="code-tag">&lt;title&gt;</code>Мое хобби<code class="code-tag">&lt;/title&gt;</code>
+    <code class="code-tag">&lt;link rel=</code><code class="code-value">"stylesheet"</code> <code class="code-tag">href=</code><code class="code-value">"styles.css"</code><code class="code-tag">&gt;</code>
+<code class="code-tag">&lt;/head&gt;</code>
+<code class="code-tag">&lt;body&gt;</code>
+    <code class="code-tag">&lt;header id=</code><code class="code-value">"main-header"</code><code class="code-tag">&gt;</code>
+        <code class="code-comment">&lt;!-- Навигация и заголовок --&gt;</code>
+    <code class="code-tag">&lt;/header&gt;</code>
+    
+    <code class="code-tag">&lt;main class=</code><code class="code-value">"content"</code><code class="code-tag">&gt;</code>
+        <code class="code-comment">&lt;!-- Секции с контентом --&gt;</code>
+    <code class="code-tag">&lt;/main&gt;</code>
+<code class="code-tag">&lt;/body&gt;</code>
+<code class="code-tag">&lt;/html&gt;</code></pre>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <p class="content-text">
+                            <strong>Критерии оценки:</strong> правильность HTML-структуры, использование CSS, 
+                            семантическая разметка, визуальная привлекательность, работающие hover-эффекты.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="test-section results-section" id="resultsSection" style="display: none;">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Результаты теста
+                    </h2>
+                    
+                    <div class="score-display" id="scoreDisplay">0/7</div>
+                    
+                    <div class="results-message" id="resultsMessage">
+                        Проверьте свои ответы выше!
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <p class="content-text">
+                            <strong>Переходите к практическому заданию!</strong><br>
+                            Теоретические знания нужно закреплять практикой.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="lesson-navigation">
+                    <a href="css-basics-lesson.html" class="nav-btn outline">
+                        <i class="fas fa-arrow-left"></i> Вернуться к урокам
+                    </a>
+                    <a href="flexbox-lesson.html" class="nav-btn">
+                        Следующий урок <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
+                        <li><a href="webdev-course.html">Веб-разработка</a></li>
+                        <li><a href="python-course.html">Python</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="courses.html">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme and accent color functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Quiz functionality
+        document.getElementById('checkTheory').addEventListener('click', function() {
+            let score = 0;
+            const totalQuestions = 7;
+            
+            // Check each question
+            document.querySelectorAll('.quiz-options').forEach((options, index) => {
+                let answered = false;
+                let correct = false;
+                
+                options.querySelectorAll('.quiz-option').forEach(option => {
+                    if (option.classList.contains('correct') || option.classList.contains('incorrect')) {
+                        answered = true;
+                    }
+                    
+                    if (option.getAttribute('data-correct') === 'true') {
+                        if (option.classList.contains('correct')) {
+                            correct = true;
+                            score++;
+                        }
+                    }
+                });
+                
+                // If not answered, show correct answers
+                if (!answered) {
+                    options.querySelectorAll('.quiz-option').forEach(option => {
+                        if (option.getAttribute('data-correct') === 'true') {
+                            option.classList.add('correct');
+                        } else {
+                            option.classList.add('incorrect');
+                        }
+                    });
+                }
+            });
+            
+            // Show results
+            document.getElementById('scoreDisplay').textContent = `${score}/${totalQuestions}`;
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Custom message based on score
+            let message = '';
+            if (score === totalQuestions) {
+                message = '🎉 Отлично! Вы прекрасно усвоили материал!';
+            } else if (score >= 5) {
+                message = '👍 Хороший результат! Продолжайте в том же духе!';
+            } else if (score >= 3) {
+                message = '📚 Есть над чем поработать. Рекомендуем повторить уроки.';
+            } else {
+                message = '💪 Не отчаивайтесь! Практика поможет улучшить результат.';
+            }
+            
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        });
+
+        // Option selection
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove previous selections from this question
+                const optionsContainer = this.parentElement;
+                optionsContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                });
+                
+                // Mark selected option
+                if (this.getAttribute('data-correct') === 'true') {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Show correct answer
+                    optionsContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        if (opt.getAttribute('data-correct') === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.test-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

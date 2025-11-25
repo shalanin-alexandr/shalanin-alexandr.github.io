@@ -350,7 +350,7 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: var(--transition);
+            transition: 0.5;
             border: 1px solid var(--border-color);
             position: relative;
         }
@@ -358,11 +358,8 @@
         .course-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .course-card.featured {
-            border: 2px solid var(--accent-color);
-            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.2);
+            border-color: var(--accent-color);
+            transition: all 0.5 ease;
         }
 
         .course-header {
@@ -723,8 +720,9 @@
                 <ul>
                     <li><a href="courses.html">Курсы</a></li>
                     <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="tester.html">Тестировщик</a></li>
                     <li><a href="community.html">Сообщество</a></li>
-                    <li><a href="about.html">О нас</a></li>
+                    <li><a href="aboutus.html">О нас</a></li>
                 </ul>
             </nav>
             
@@ -770,58 +768,7 @@
 
             <section class="featured-courses">
                 <div class="courses-grid">
-                    <!-- Кибербезопасность - выделенный курс -->
-                    <div class="course-card featured">
-                        <div class="course-header">
-                            <div class="course-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="course-badge">Популярный</div>
-                            <span class="course-category">Кибербезопасность</span>
-                            <h3 class="course-title">Кибербезопасность для новичков</h3>
-                            <p class="course-description">
-                                Освой основы безопасности информации, научись защищать системы от атак и стань востребованным специалистом.
-                            </p>
-                        </div>
-                        
-                        <div class="course-content">
-                            <div class="course-meta">
-                                <div class="meta-item">
-                                    <i class="far fa-clock"></i>
-                                    <span>8 недель</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-signal"></i>
-                                    <span>Начинающий</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-laptop-code"></i>
-                                    <span>4 проекта</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-certificate"></i>
-                                    <span>Сертификат</span>
-                                </div>
-                            </div>
-                            
-                            <div class="course-skills">
-                                <span class="skill-tag">Безопасность</span>
-                                <span class="skill-tag">Сети</span>
-                                <span class="skill-tag">Криптография</span>
-                                <span class="skill-tag">Пентестинг</span>
-                            </div>
-                            
-                            <div class="course-actions">
-                                <a href="cybersecurity-course.html" class="btn btn-primary">
-                                    <i class="fas fa-play-circle"></i> Начать обучение
-                                </a>
-                                <a href="cybersecurity-course.html" class="btn btn-outline">
-                                    <i class="fas fa-info-circle"></i> Подробнее
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
+
                     <!-- Веб-разработка - полноценный курс -->
                     <div class="course-card">
                         <div class="course-header">
@@ -869,6 +816,58 @@
                                     <i class="fas fa-play-circle"></i> Начать обучение
                                 </a>
                                 <a href="webdev-course.html" class="btn btn-outline">
+                                    <i class="fas fa-info-circle"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кибербезопасность - выделенный курс -->
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="course-badge">Популярный</div>
+                            <span class="course-category">Кибербезопасность</span>
+                            <h3 class="course-title">Кибербезопасность для новичков</h3>
+                            <p class="course-description">
+                                Освой основы безопасности информации, научись защищать системы от атак и стань востребованным специалистом.
+                            </p>
+                        </div>
+                        
+                        <div class="course-content">
+                            <div class="course-meta">
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>8 недель</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-signal"></i>
+                                    <span>Начинающий</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-laptop-code"></i>
+                                    <span>4 проекта</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>Сертификат</span>
+                                </div>
+                            </div>
+                            
+                            <div class="course-skills">
+                                <span class="skill-tag">Безопасность</span>
+                                <span class="skill-tag">Сети</span>
+                                <span class="skill-tag">Криптография</span>
+                                <span class="skill-tag">Пентестинг</span>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <a href="cybersecurity-course.html" class="btn btn-primary">
+                                    <i class="fas fa-play-circle"></i> Начать обучение
+                                </a>
+                                <a href="cybersecurity-course.html" class="btn btn-outline">
                                     <i class="fas fa-info-circle"></i> Подробнее
                                 </a>
                             </div>

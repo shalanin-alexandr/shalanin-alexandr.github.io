@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка HTML/CSS - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Все стили из предыдущего примера */
+        :root {
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f8f9fa;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s ease;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-theme="dark"] {
+            --accent-color: #3498db;
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --header-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #3498db 0%, #1a1a2e 100%);
+        }
+
+        [data-accent="blue"] {
+            --accent-color: #3498db;
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        }
+
+        [data-accent="green"] {
+            --accent-color: #2ecc71;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        [data-accent="purple"] {
+            --accent-color: #9b59b6;
+            --gradient: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        [data-accent="orange"] {
+            --accent-color: #e67e22;
+            --gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-icon, .color-icon, .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-icon {
+            color: var(--text-color);
+        }
+
+        .color-icon {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .profile-icon {
+            color: var(--text-color);
+        }
+
+        .profile-icon:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-icon .sun {
+            opacity: 0;
+            transform: rotate(90deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .theme-icon .moon {
+            opacity: 1;
+            transform: rotate(0);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .theme-icon .sun {
+            opacity: 1;
+            transform: rotate(0);
+        }
+
+        [data-theme="dark"] .theme-icon .moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        .accent-colors {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            z-index: 100;
+        }
+
+        .accent-colors.show {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .accent-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .accent-color:hover {
+            transform: scale(1.1);
+        }
+
+        .accent-color.active {
+            border-color: var(--text-color);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+        }
+
+        /* Test Header */
+        .test-header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .test-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0.05;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .test-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .test-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .test-subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        /* Test Content */
+        .test-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .test-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        /* Специфические стили для проверки */
+        .assignment-selector {
+            margin-bottom: 30px;
+        }
+
+        .assignment-options {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .assignment-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .assignment-option:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .assignment-option.selected {
+            border-color: var(--accent-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .assignment-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 2px;
+        }
+
+        .assignment-info h3 {
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .assignment-info p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .assignment-requirements {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--border-color);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin: 25px 0;
+            transition: var(--transition);
+            background: var(--card-bg);
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-color);
+        }
+
+        .upload-area.drag-over {
+            border-color: var(--accent-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 10px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .upload-btn.outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .upload-btn.outline:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 20px auto;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .file-list {
+            margin: 20px 0;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .check-results {
+            margin-top: 30px;
+        }
+
+        .check-category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirement-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .requirement.fulfilled {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .requirement.missing {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .requirement.partial {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-icon.fulfilled {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-icon.missing {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .status-icon.partial {
+            background: #f39c12;
+            color: white;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            transition: width 0.5s ease;
+        }
+
+        .code-preview {
+            background: #2b2b2b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .code-comment { color: #6a9955; }
+        .code-tag { color: #569cd6; }
+        .code-attribute { color: #9cdcfe; }
+        .code-value { color: #ce9178; }
+        .code-css-selector { color: #d7ba7d; }
+        .code-css-property { color: #9cdcfe; }
+        .code-css-value { color: #ce9178; }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                order: 2;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                margin-top: 10px;
+            }
+
+            .test-title {
+                font-size: 2.2rem;
+            }
+
+            .test-section {
+                padding: 25px;
+            }
+
+            .upload-area {
+                padding: 25px;
+            }
+
+            .upload-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .assignment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light" data-accent="blue">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-code"></i>
+                <span>CodeMaster</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="courses.html">Курсы</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="tester.html">Тестировщик</a></li>
+                    <li><a href="community.html">Сообщество</a></li>
+                    <li><a href="aboutus.html">О нас</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-controls">
+                <div class="theme-icon" id="themeToggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </div>
+                
+                <div class="accent-selector">
+                    <div class="color-icon" id="accentToggle">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="accent-colors" id="accentColors">
+                        <div class="accent-color blue active" data-color="blue" style="background-color: #3498db;"></div>
+                        <div class="accent-color green" data-color="green" style="background-color: #2ecc71;"></div>
+                        <div class="accent-color purple" data-color="purple" style="background-color: #9b59b6;"></div>
+                        <div class="accent-color orange" data-color="orange" style="background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="test-header">
+                <div class="test-badge">
+                    <i class="fas fa-robot"></i> АВТОМАТИЧЕСКАЯ ПРОВЕРКА
+                </div>
+                <h1 class="test-title">Проверка HTML и CSS</h1>
+                <p class="test-subtitle">Выберите задание и загрузите файлы для автоматической проверки</p>
+            </section>
+
+            <section class="test-content">
+                <!-- Выбор задания -->
+                <div class="test-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-tasks"></i>
+                        Выбор задания
+                    </h2>
+                    
+                    <div class="assignment-selector">
+                        <div class="assignment-options">
+                            <div class="assignment-option" data-assignment="lesson1">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-file-code"></i>
+                                </div>
+                                <div class="assignment-info">
+                                    <h3>Урок 1: Основы HTML</h3>
+                                    <p>Курс "Современная веб-разработка", урок 1, задание 1</p>
+                                    <div class="assignment-requirements">
+                                        <strong>Требуется:</strong> только HTML файл
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assignment-option" data-assignment="lesson2">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <div class="assignment-info">
+                                    <h3>Урок 2: Основы CSS</h3>
+                                    <p>Курс "Современная веб-разработка", урок 2, задание 1</p>
+                                    <div class="assignment-requirements">
+                                        <strong>Требуется:</strong> HTML + CSS файлы
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assignment-option" data-assignment="practice">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <div class="assignment-info">
+                                    <h3>Практическое задание</h3>
+                                    <p>Курс "Современная веб-разработка", Тестовое занятие</p>
+                                    <div class="assignment-requirements">
+                                        <strong>Требуется:</strong> HTML + CSS файлы с семантической версткой
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Загрузка файлов -->
+                <div class="test-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-upload"></i>
+                        Загрузка файлов
+                    </h2>
+                    
+                    <div id="fileRequirements" style="margin-bottom: 20px; padding: 15px; background: var(--bg-color); border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                        <p>Выберите задание для отображения требований к файлам</p>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 20px;"></i>
+                        <h3>Перетащите файлы сюда</h3>
+                        <p>или</p>
+                        <div>
+                            <button class="upload-btn" onclick="document.getElementById('htmlFile').click()">
+                                <i class="fas fa-file-code"></i> Загрузить HTML
+                            </button>
+                            <button class="upload-btn outline" onclick="document.getElementById('cssFile').click()">
+                                <i class="fas fa-palette"></i> Загрузить CSS
+                            </button>
+                        </div>
+                        <p style="margin-top: 20px; opacity: 0.7;">
+                            Поддерживаются файлы: .html, .css
+                        </p>
+                    </div>
+
+                    <input type="file" id="htmlFile" class="file-input" accept=".html" onchange="handleFileSelect(this.files, 'html')">
+                    <input type="file" id="cssFile" class="file-input" accept=".css" onchange="handleFileSelect(this.files, 'css')">
+
+                    <div class="file-list" id="fileList">
+                        <!-- Файлы будут отображаться здесь -->
+                    </div>
+
+                    <button class="submit-btn" id="checkFiles" onclick="checkFiles()" disabled>
+                        <i class="fas fa-play-circle"></i> Начать проверку
+                    </button>
+                </div>
+
+                <!-- Результаты проверки -->
+                <div class="test-section" id="resultsSection" style="display: none;">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Результаты проверки
+                    </h2>
+
+                    <div class="score-display">
+                        <div>Общий результат</div>
+                        <div class="score-value" id="totalScore">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <div id="scoreMessage">Загрузите файлы для проверки</div>
+                    </div>
+
+                    <div class="check-results">
+                        <!-- HTML проверка -->
+                        <div class="check-category" id="htmlCategory">
+                            <h3 class="category-title">
+                                <i class="fas fa-code"></i>
+                                HTML Структура
+                            </h3>
+                            <div class="requirement-list" id="htmlRequirements">
+                                <!-- Требования HTML -->
+                            </div>
+                        </div>
+
+                        <!-- CSS проверка -->
+                        <div class="check-category" id="cssCategory">
+                            <h3 class="category-title">
+                                <i class="fas fa-paint-brush"></i>
+                                CSS Стили
+                            </h3>
+                            <div class="requirement-list" id="cssRequirements">
+                                <!-- Требования CSS -->
+                            </div>
+                        </div>
+
+                        <!-- Детальный анализ -->
+                        <div class="check-category">
+                            <h3 class="category-title">
+                                <i class="fas fa-search"></i>
+                                Детальный анализ
+                            </h3>
+                            <div id="detailedAnalysis">
+                                <!-- Детали проверки -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CodeMaster</h3>
+                    <p>Платформа для обучения программированию с нуля. Сделано с ❤️ для начинающих разработчиков.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Курсы</h3>
+                    <ul class="footer-links">
+                        <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
+                        <li><a href="webdev-course.html">Веб-разработка</a></li>
+                        <li><a href="python-course.html">Python</a></li>
+                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="courses.html">Все курсы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="community.html">Сообщество</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="aboutus.html">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">Команда</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CodeMaster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Переключение темы
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Проверяем сохраненную тему в localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Переключение акцентного цвета
+        const accentToggle = document.getElementById('accentToggle');
+        const accentColors = document.getElementById('accentColors');
+        const accentColorElements = document.querySelectorAll('.accent-color');
+        
+        // Проверяем сохраненный цвет в localStorage
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        body.setAttribute('data-accent', savedAccent);
+        updateActiveAccent(savedAccent);
+        
+        accentToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            accentColors.classList.toggle('show');
+        });
+        
+        // Закрываем палитру при клике вне её
+        document.addEventListener('click', () => {
+            accentColors.classList.remove('show');
+        });
+        
+        accentColorElements.forEach(colorElement => {
+            colorElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const color = colorElement.getAttribute('data-color');
+                body.setAttribute('data-accent', color);
+                localStorage.setItem('accent', color);
+                updateActiveAccent(color);
+                accentColors.classList.remove('show');
+            });
+        });
+        
+        function updateActiveAccent(color) {
+            accentColorElements.forEach(element => {
+                element.classList.remove('active');
+                if (element.getAttribute('data-color') === color) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за секциями контента
+        document.querySelectorAll('.test-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+
+        // Хранение загруженных файлов
+        let uploadedFiles = {
+            html: null,
+            css: null
+        };
+
+        // Текущее выбранное задание
+        let currentAssignment = null;
+
+        // Требования для каждого задания
+        const assignments = {
+            lesson1: {
+                name: "Урок 1: Основы HTML",
+                description: "Создание базовой HTML-страницы",
+                fileRequirements: "Требуется только HTML файл",
+                html: [
+                    { id: 'doctype', name: 'DOCTYPE declaration', required: true },
+                    { id: 'html_tag', name: 'HTML tag with lang attribute', required: true },
+                    { id: 'head', name: 'HEAD section', required: true },
+                    { id: 'title', name: 'TITLE tag', required: true },
+                    { id: 'body', name: 'BODY section', required: true },
+                    { id: 'h1', name: 'H1 heading для имени', required: true },
+                    { id: 'p', name: 'Paragraph (P tag) о биографии/увлечениях', required: true },
+                    { id: 'ul_ol', name: 'List (UL/OL)', required: true },
+                    { id: 'img', name: 'Image (IMG tag)', required: true },
+                    { id: 'a', name: 'Link (A tag)', required: true },
+                    { id: 'id', name: 'ID для главных элементов', required: true },
+                    { id: 'class', name: 'Class для группировки', required: true }
+                ],
+                css: [] // Для этого задания CSS не проверяем
+            },
+            lesson2: {
+                name: "Урок 2: Основы CSS",
+                description: "Стилизация HTML-страницы с помощью CSS",
+                fileRequirements: "Требуются HTML и CSS файлы",
+                html: [
+                    { id: 'doctype', name: 'DOCTYPE declaration', required: true },
+                    { id: 'html_tag', name: 'HTML tag with lang attribute', required: true },
+                    { id: 'head', name: 'HEAD section', required: true },
+                    { id: 'title', name: 'TITLE tag', required: true },
+                    { id: 'body', name: 'BODY section', required: true },
+                    { id: 'h1', name: 'H1 heading', required: true },
+                    { id: 'p', name: 'Paragraph (P tag)', required: true },
+                    { id: 'ul_ol', name: 'List (UL/OL)', required: true },
+                    { id: 'img', name: 'Image (IMG tag)', required: true },
+                    { id: 'a', name: 'Link (A tag)', required: true },
+                    { id: 'id', name: 'ID для главных элементов', required: true },
+                    { id: 'class', name: 'Class для группировки', required: true },
+                    { id: 'css_link', name: 'Подключение внешнего CSS файла', required: true }
+                ],
+                css: [
+                    { id: 'external_css', name: 'Отдельный файл styles.css', required: true },
+                    { id: 'tag_selectors', name: 'Селекторы по тегам', required: true },
+                    { id: 'class_selectors', name: 'Селекторы по классам', required: true },
+                    { id: 'id_selectors', name: 'Селекторы по ID', required: true },
+                    { id: 'colors', name: 'Цвета для текста и фона', required: true },
+                    { id: 'fonts', name: 'Стилизация шрифтов (семейство, размер, жирность)', required: true },
+                    { id: 'margin_padding', name: 'Отступы (margin и padding)', required: true },
+                    { id: 'header_gradient', name: 'Header с градиентным фоном', required: true },
+                    { id: 'hover', name: 'Hover-эффекты для кнопок/ссылок', required: true }
+                ]
+            },
+            practice: {
+                name: "Практическое задание",
+                description: "Создание семантической страницы о хобби",
+                fileRequirements: "Требуются HTML и CSS файлы с семантической версткой",
+                html: [
+                    { id: 'doctype', name: 'DOCTYPE declaration', required: true },
+                    { id: 'html_tag', name: 'HTML tag with lang attribute', required: true },
+                    { id: 'head', name: 'HEAD section', required: true },
+                    { id: 'title', name: 'TITLE tag', required: true },
+                    { id: 'body', name: 'BODY section', required: true },
+                    { id: 'semantic_header', name: 'Semantic tag: HEADER', required: true },
+                    { id: 'semantic_main', name: 'Semantic tag: MAIN', required: true },
+                    { id: 'semantic_section', name: 'Semantic tag: SECTION', required: true },
+                    { id: 'navigation', name: 'Навигационное меню с 3-4 пунктами', required: true },
+                    { id: 'h1', name: 'H1 heading', required: true },
+                    { id: 'h2_h3', name: 'H2/H3 headings', required: true },
+                    { id: 'img', name: 'Image хобби', required: true },
+                    { id: 'ul_ol', name: 'List преимуществ хобби', required: true },
+                    { id: 'id', name: 'ID для элементов', required: true },
+                    { id: 'class', name: 'Class для стилизации', required: true },
+                    { id: 'css_link', name: 'Подключение внешнего CSS файла', required: true }
+                ],
+                css: [
+                    { id: 'external_css', name: 'Отдельный файл styles.css', required: true },
+                    { id: 'tag_selectors', name: 'Селекторы по тегам', required: true },
+                    { id: 'class_selectors', name: 'Селекторы по классам', required: true },
+                    { id: 'id_selectors', name: 'Селекторы по ID', required: true },
+                    { id: 'colors', name: 'Цвета для текста и фона', required: true },
+                    { id: 'fonts', name: 'Стилизация шрифтов', required: true },
+                    { id: 'margin_padding', name: 'Отступы (margin и padding)', required: true },
+                    { id: 'layout', name: 'Правильная структура layout', required: true }
+                ]
+            }
+        };
+
+        // Выбор задания
+        document.querySelectorAll('.assignment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Убираем выделение со всех вариантов
+                document.querySelectorAll('.assignment-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Выделяем выбранный вариант
+                this.classList.add('selected');
+                
+                // Сохраняем выбранное задание
+                currentAssignment = this.getAttribute('data-assignment');
+                
+                // Обновляем информацию о требованиях к файлам
+                updateFileRequirements();
+                
+                // Обновляем состояние кнопки проверки
+                updateCheckButton();
+            });
+        });
+
+        // Обновление информации о требованиях к файлам
+        function updateFileRequirements() {
+            const requirementsDiv = document.getElementById('fileRequirements');
+            
+            if (currentAssignment && assignments[currentAssignment]) {
+                const assignment = assignments[currentAssignment];
+                let html = `
+                    <h4>${assignment.name}</h4>
+                    <p>${assignment.description}</p>
+                    <p><strong>${assignment.fileRequirements}</strong></p>
+                `;
+                
+                requirementsDiv.innerHTML = html;
+            } else {
+                requirementsDiv.innerHTML = '<p>Выберите задание для отображения требований к файлам</p>';
+            }
+        }
+
+        // Обработка выбора файлов
+        function handleFileSelect(files, type) {
+            if (files.length > 0) {
+                const file = files[0];
+                uploadedFiles[type] = file;
+                displayFile(file, type);
+                updateCheckButton();
+            }
+        }
+
+        // Отображение загруженного файла
+        function displayFile(file, type) {
+            const fileList = document.getElementById('fileList');
+            const fileId = `${type}-file`;
+            
+            // Удаляем предыдущую версию файла этого типа
+            const existingFile = document.getElementById(fileId);
+            if (existingFile) {
+                existingFile.remove();
+            }
+
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.id = fileId;
+            
+            fileItem.innerHTML = `
+                <i class="fas fa-${type === 'html' ? 'file-code' : 'palette'} file-icon"></i>
+                <div style="flex: 1;">
+                    <strong>${file.name}</strong>
+                    <div style="font-size: 0.9rem; opacity: 0.7;">
+                        ${(file.size / 1024).toFixed(2)} KB • ${type.toUpperCase()}
+                    </div>
+                </div>
+                <button class="upload-btn outline" onclick="removeFile('${type}')" style="padding: 8px 15px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            fileList.appendChild(fileItem);
+        }
+
+        // Удаление файла
+        function removeFile(type) {
+            uploadedFiles[type] = null;
+            const fileElement = document.getElementById(`${type}-file`);
+            if (fileElement) {
+                fileElement.remove();
+            }
+            updateCheckButton();
+        }
+
+        // Обновление состояния кнопки проверки
+        function updateCheckButton() {
+            const checkBtn = document.getElementById('checkFiles');
+            
+            if (!currentAssignment) {
+                checkBtn.disabled = true;
+                return;
+            }
+            
+            const assignment = assignments[currentAssignment];
+            
+            // Для задания 1 требуется только HTML
+            if (currentAssignment === 'lesson1') {
+                checkBtn.disabled = !uploadedFiles.html;
+            } 
+            // Для других заданий требуется HTML и CSS
+            else {
+                checkBtn.disabled = !(uploadedFiles.html && uploadedFiles.css);
+            }
+        }
+
+        // Drag and Drop функциональность
+        const uploadArea = document.getElementById('uploadArea');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.add('drag-over'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('drag-over'), false);
+        });
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            Array.from(files).forEach(file => {
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (extension === 'html') {
+                    handleFileSelect([file], 'html');
+                } else if (extension === 'css') {
+                    handleFileSelect([file], 'css');
+                }
+            });
+        }
+
+        // Основная функция проверки
+        async function checkFiles() {
+            if (!currentAssignment) {
+                alert('Пожалуйста, выберите задание');
+                return;
+            }
+
+            if (!uploadedFiles.html) {
+                alert('Пожалуйста, загрузите HTML файл');
+                return;
+            }
+
+            const assignment = assignments[currentAssignment];
+            
+            // Для заданий 2 и 3 проверяем наличие CSS
+            if (currentAssignment !== 'lesson1' && !uploadedFiles.css) {
+                alert('Для этого задания требуется CSS файл');
+                return;
+            }
+
+            // Показываем секцию результатов
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Инициализируем требования
+            initializeRequirements(assignment);
+
+            // Читаем и проверяем файлы
+            const htmlContent = await readFile(uploadedFiles.html);
+            const cssContent = uploadedFiles.css ? await readFile(uploadedFiles.css) : '';
+
+            // Проверяем HTML
+            const htmlResults = checkHTML(htmlContent, assignment);
+            
+            // Проверяем CSS
+            const cssResults = checkCSS(cssContent, htmlContent, assignment);
+
+            // Обновляем интерфейс с результатами
+            updateResults(htmlResults, cssResults, assignment);
+            
+            // Прокручиваем к результатам
+            document.getElementById('resultsSection').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Чтение файла
+        function readFile(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsText(file);
+            });
+        }
+
+        // Инициализация требований в интерфейсе
+        function initializeRequirements(assignment) {
+            const htmlReqContainer = document.getElementById('htmlRequirements');
+            const cssReqContainer = document.getElementById('cssRequirements');
+            
+            // Показываем или скрываем CSS секцию в зависимости от задания
+            const cssCategory = document.getElementById('cssCategory');
+            if (assignment.css.length > 0) {
+                cssCategory.style.display = 'block';
+            } else {
+                cssCategory.style.display = 'none';
+            }
+
+            htmlReqContainer.innerHTML = assignment.html.map(req => `
+                <div class="requirement" id="html-${req.id}">
+                    <div class="status-icon">?</div>
+                    <div>${req.name} ${req.required ? '<span style="color: #e74c3c;">*</span>' : ''}</div>
+                </div>
+            `).join('');
+
+            if (assignment.css.length > 0) {
+                cssReqContainer.innerHTML = assignment.css.map(req => `
+                    <div class="requirement" id="css-${req.id}">
+                        <div class="status-icon">?</div>
+                        <div>${req.name} ${req.required ? '<span style="color: #e74c3c;">*</span>' : ''}</div>
+                    </div>
+                `).join('');
+            } else {
+                cssReqContainer.innerHTML = '<p>Для этого задания CSS не проверяется</p>';
+            }
+        }
+
+        // Проверка HTML
+        function checkHTML(htmlContent, assignment) {
+            const results = {};
+            const requirements = assignment.html;
+            
+            requirements.forEach(req => {
+                switch(req.id) {
+                    case 'doctype':
+                        results.doctype = /<!DOCTYPE html>/i.test(htmlContent);
+                        break;
+                    case 'html_tag':
+                        results.html_tag = /<html[^>]*lang=["'][^"']*["']/i.test(htmlContent);
+                        break;
+                    case 'head':
+                        results.head = /<head>[\s\S]*?<\/head>/i.test(htmlContent);
+                        break;
+                    case 'title':
+                        results.title = /<title>[\s\S]*?<\/title>/i.test(htmlContent);
+                        break;
+                    case 'body':
+                        results.body = /<body>[\s\S]*?<\/body>/i.test(htmlContent);
+                        break;
+                    case 'h1':
+                        results.h1 = /<h1[^>]*>[\s\S]*?<\/h1>/i.test(htmlContent);
+                        break;
+                    case 'p':
+                        results.p = /<p[^>]*>[\s\S]*?<\/p>/i.test(htmlContent);
+                        break;
+                    case 'ul_ol':
+                        results.ul_ol = /<(ul|ol)[^>]*>[\s\S]*?<\/(ul|ol)>/i.test(htmlContent);
+                        break;
+                    case 'img':
+                        results.img = /<img[^>]*>/i.test(htmlContent);
+                        break;
+                    case 'a':
+                        results.a = /<a[^>]*href=["'][^"']*["'][^>]*>[\s\S]*?<\/a>/i.test(htmlContent);
+                        break;
+                    case 'id':
+                        results.id = /id=["'][^"']*["']/i.test(htmlContent);
+                        break;
+                    case 'class':
+                        results.class = /class=["'][^"']*["']/i.test(htmlContent);
+                        break;
+                    case 'css_link':
+                        results.css_link = /<link[^>]*rel=["']stylesheet["'][^>]*>/i.test(htmlContent);
+                        break;
+                    case 'semantic_header':
+                        results.semantic_header = /<header[^>]*>/i.test(htmlContent);
+                        break;
+                    case 'semantic_main':
+                        results.semantic_main = /<main[^>]*>/i.test(htmlContent);
+                        break;
+                    case 'semantic_section':
+                        results.semantic_section = /<section[^>]*>/i.test(htmlContent);
+                        break;
+                    case 'navigation':
+                        // Проверяем наличие навигации (обычно nav с несколькими ссылками)
+                        results.navigation = /<nav[^>]*>[\s\S]*?<\/nav>/i.test(htmlContent) && 
+                                           (htmlContent.match(/<a[^>]*href=["'][^"']*["'][^>]*>/gi) || []).length >= 3;
+                        break;
+                    case 'h2_h3':
+                        results.h2_h3 = /<h[23][^>]*>[\s\S]*?<\/h[23]>/i.test(htmlContent);
+                        break;
+                }
+            });
+
+            return results;
+        }
+
+        // Проверка CSS
+        function checkCSS(cssContent, htmlContent, assignment) {
+            const results = {};
+            const requirements = assignment.css;
+            
+            if (!cssContent) {
+                // Если CSS нет, все проверки провалены
+                requirements.forEach(req => {
+                    results[req.id] = false;
+                });
+                return results;
+            }
+
+            requirements.forEach(req => {
+                switch(req.id) {
+                    case 'external_css':
+                        results.external_css = cssContent.length > 0;
+                        break;
+                    case 'tag_selectors':
+                        results.tag_selectors = /(^|\}|\{)[\s]*[a-zA-Z][^{]*\{/i.test(cssContent);
+                        break;
+                    case 'class_selectors':
+                        results.class_selectors = /\.[a-zA-Z][^{]*\{/i.test(cssContent);
+                        break;
+                    case 'id_selectors':
+                        results.id_selectors = /#[a-zA-Z][^{]*\{/i.test(cssContent);
+                        break;
+                    case 'colors':
+                        results.colors = /(color|background-color|background):/i.test(cssContent);
+                        break;
+                    case 'fonts':
+                        results.fonts = /(font-family|font-size|font-weight):/i.test(cssContent);
+                        break;
+                    case 'margin_padding':
+                        results.margin_padding = /(margin|padding):/i.test(cssContent);
+                        break;
+                    case 'header_gradient':
+                        results.header_gradient = /header[^{]*\{[\s\S]*?(background|background-image):[^;}]*gradient/i.test(cssContent);
+                        break;
+                    case 'hover':
+                        results.hover = /:hover/i.test(cssContent);
+                        break;
+                    case 'layout':
+                        results.layout = /(width|height|display|position):/i.test(cssContent);
+                        break;
+                }
+            });
+
+            return results;
+        }
+
+        // Обновление результатов в интерфейсе
+        function updateResults(htmlResults, cssResults, assignment) {
+            let totalScore = 0;
+            let maxScore = 0;
+
+            // Обновляем HTML требования
+            assignment.html.forEach(req => {
+                const element = document.getElementById(`html-${req.id}`);
+                const fulfilled = htmlResults[req.id];
+                
+                if (fulfilled) {
+                    element.className = 'requirement fulfilled';
+                    element.querySelector('.status-icon').className = 'status-icon fulfilled';
+                    element.querySelector('.status-icon').textContent = '✓';
+                    totalScore += req.required ? 2 : 1;
+                } else {
+                    element.className = `requirement ${req.required ? 'missing' : 'partial'}`;
+                    element.querySelector('.status-icon').className = `status-icon ${req.required ? 'missing' : 'partial'}`;
+                    element.querySelector('.status-icon').textContent = req.required ? '✗' : '~';
+                    if (!req.required) totalScore += 0.5;
+                }
+                
+                maxScore += req.required ? 2 : 1;
+            });
+
+            // Обновляем CSS требования
+            if (assignment.css.length > 0) {
+                assignment.css.forEach(req => {
+                    const element = document.getElementById(`css-${req.id}`);
+                    const fulfilled = cssResults[req.id];
+                    
+                    if (fulfilled) {
+                        element.className = 'requirement fulfilled';
+                        element.querySelector('.status-icon').className = 'status-icon fulfilled';
+                        element.querySelector('.status-icon').textContent = '✓';
+                        totalScore += req.required ? 2 : 1;
+                    } else {
+                        element.className = `requirement ${req.required ? 'missing' : 'partial'}`;
+                        element.querySelector('.status-icon').className = `status-icon ${req.required ? 'missing' : 'partial'}`;
+                        element.querySelector('.status-icon').textContent = req.required ? '✗' : '~';
+                        if (!req.required) totalScore += 0.5;
+                    }
+                    
+                    maxScore += req.required ? 2 : 1;
+                });
+            }
+
+            // Обновляем общий счет
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            document.getElementById('totalScore').textContent = `${percentage}%`;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+
+            // Сообщение в зависимости от результата
+            let message = '';
+            if (percentage >= 90) message = '🎉 Отлично! Прекрасная работа!';
+            else if (percentage >= 70) message = '👍 Хорошо! Есть небольшие замечания.';
+            else if (percentage >= 50) message = '💪 Неплохо, но нужно доработать.';
+            else message = '📚 Рекомендуем повторить материалы курса.';
+
+            document.getElementById('scoreMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>
