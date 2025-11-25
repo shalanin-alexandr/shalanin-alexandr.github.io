@@ -6,7 +6,7 @@
     <title>Проверка HTML/CSS - CodeMaster</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Все стили из предыдущего примера */
+        /* Все стили из предыдущего примера остаются без изменений */
         :root {
             --accent-color: #3498db;
             --bg-color: #ffffff;
@@ -319,41 +319,32 @@
             margin-bottom: 30px;
         }
 
-        .assignment-options {
-            display: grid;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .assignment-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: var(--bg-color);
+        .assignment-dropdown {
+            width: 100%;
+            padding: 12px 15px;
             border: 2px solid var(--border-color);
             border-radius: 10px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .assignment-option:hover {
+        .assignment-dropdown:focus {
+            outline: none;
             border-color: var(--accent-color);
-            transform: translateY(-2px);
         }
 
-        .assignment-option.selected {
-            border-color: var(--accent-color);
-            background: rgba(52, 152, 219, 0.1);
+        .assignment-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
         }
 
-        .assignment-icon {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            margin-top: 2px;
-        }
-
-        .assignment-info h3 {
+        .assignment-info h4 {
             margin-bottom: 8px;
             color: var(--text-color);
         }
@@ -579,24 +570,6 @@
             transition: width 0.5s ease;
         }
 
-        .code-preview {
-            background: #2b2b2b;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            overflow-x: auto;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .code-comment { color: #6a9955; }
-        .code-tag { color: #569cd6; }
-        .code-attribute { color: #9cdcfe; }
-        .code-value { color: #ce9178; }
-        .code-css-selector { color: #d7ba7d; }
-        .code-css-property { color: #9cdcfe; }
-        .code-css-value { color: #ce9178; }
-
         /* Footer */
         footer {
             background-color: var(--card-bg);
@@ -706,10 +679,6 @@
                 padding: 12px 20px;
                 font-size: 1rem;
             }
-
-            .assignment-options {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -775,45 +744,16 @@
                     </h2>
                     
                     <div class="assignment-selector">
-                        <div class="assignment-options">
-                            <div class="assignment-option" data-assignment="lesson1">
-                                <div class="assignment-icon">
-                                    <i class="fas fa-file-code"></i>
-                                </div>
-                                <div class="assignment-info">
-                                    <h3>Урок 1: Основы HTML</h3>
-                                    <p>Курс "Современная веб-разработка", урок 1, задание 1</p>
-                                    <div class="assignment-requirements">
-                                        <strong>Требуется:</strong> только HTML файл
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="assignment-option" data-assignment="lesson2">
-                                <div class="assignment-icon">
-                                    <i class="fas fa-paint-brush"></i>
-                                </div>
-                                <div class="assignment-info">
-                                    <h3>Урок 2: Основы CSS</h3>
-                                    <p>Курс "Современная веб-разработка", урок 2, задание 1</p>
-                                    <div class="assignment-requirements">
-                                        <strong>Требуется:</strong> HTML + CSS файлы
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="assignment-option" data-assignment="practice">
-                                <div class="assignment-icon">
-                                    <i class="fas fa-laptop-code"></i>
-                                </div>
-                                <div class="assignment-info">
-                                    <h3>Практическое задание</h3>
-                                    <p>Курс "Современная веб-разработка", Тестовое занятие</p>
-                                    <div class="assignment-requirements">
-                                        <strong>Требуется:</strong> HTML + CSS файлы с семантической версткой
-                                    </div>
-                                </div>
-                            </div>
+                        <select class="assignment-dropdown" id="assignmentSelect">
+                            <option value="">-- Выберите задание --</option>
+                            <option value="lesson1">Урок 1: Основы HTML</option>
+                            <option value="lesson2">Урок 2: Основы CSS</option>
+                            <option value="practice">Практическое задание</option>
+                            <!-- Можно добавить больше заданий по мере необходимости -->
+                        </select>
+                        
+                        <div class="assignment-info" id="assignmentInfo">
+                            <p>Выберите задание для отображения требований</p>
                         </div>
                     </div>
                 </div>
@@ -824,10 +764,6 @@
                         <i class="fas fa-upload"></i>
                         Загрузка файлов
                     </h2>
-                    
-                    <div id="fileRequirements" style="margin-bottom: 20px; padding: 15px; background: var(--bg-color); border-radius: 8px; border-left: 4px solid var(--accent-color);">
-                        <p>Выберите задание для отображения требований к файлам</p>
-                    </div>
                     
                     <div class="upload-area" id="uploadArea">
                         <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 20px;"></i>
@@ -894,17 +830,6 @@
                             </h3>
                             <div class="requirement-list" id="cssRequirements">
                                 <!-- Требования CSS -->
-                            </div>
-                        </div>
-
-                        <!-- Детальный анализ -->
-                        <div class="check-category">
-                            <h3 class="category-title">
-                                <i class="fas fa-search"></i>
-                                Детальный анализ
-                            </h3>
-                            <div id="detailedAnalysis">
-                                <!-- Детали проверки -->
                             </div>
                         </div>
                     </div>
@@ -1142,43 +1067,50 @@
             }
         };
 
-        // Выбор задания
-        document.querySelectorAll('.assignment-option').forEach(option => {
-            option.addEventListener('click', function() {
-                // Убираем выделение со всех вариантов
-                document.querySelectorAll('.assignment-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                
-                // Выделяем выбранный вариант
-                this.classList.add('selected');
-                
-                // Сохраняем выбранное задание
-                currentAssignment = this.getAttribute('data-assignment');
-                
-                // Обновляем информацию о требованиях к файлам
-                updateFileRequirements();
-                
-                // Обновляем состояние кнопки проверки
-                updateCheckButton();
-            });
+        // Выбор задания через выпадающий список
+        const assignmentSelect = document.getElementById('assignmentSelect');
+        assignmentSelect.addEventListener('change', function() {
+            currentAssignment = this.value;
+            
+            // Очищаем загруженные файлы
+            clearUploadedFiles();
+            
+            // Скрываем результаты проверки
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            // Обновляем информацию о задании
+            updateAssignmentInfo();
+            
+            // Обновляем состояние кнопки проверки
+            updateCheckButton();
         });
 
-        // Обновление информации о требованиях к файлам
-        function updateFileRequirements() {
-            const requirementsDiv = document.getElementById('fileRequirements');
+        // Очистка загруженных файлов
+        function clearUploadedFiles() {
+            uploadedFiles.html = null;
+            uploadedFiles.css = null;
+            
+            // Очищаем список файлов в интерфейсе
+            document.getElementById('fileList').innerHTML = '';
+            
+            // Сбрасываем значения input файлов
+            document.getElementById('htmlFile').value = '';
+            document.getElementById('cssFile').value = '';
+        }
+
+        // Обновление информации о задании
+        function updateAssignmentInfo() {
+            const infoDiv = document.getElementById('assignmentInfo');
             
             if (currentAssignment && assignments[currentAssignment]) {
                 const assignment = assignments[currentAssignment];
-                let html = `
+                infoDiv.innerHTML = `
                     <h4>${assignment.name}</h4>
                     <p>${assignment.description}</p>
                     <p><strong>${assignment.fileRequirements}</strong></p>
                 `;
-                
-                requirementsDiv.innerHTML = html;
             } else {
-                requirementsDiv.innerHTML = '<p>Выберите задание для отображения требований к файлам</p>';
+                infoDiv.innerHTML = '<p>Выберите задание для отображения требований</p>';
             }
         }
 
