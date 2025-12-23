@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Введение в веб-разработку - CodeMaster</title>
+    <title>Переменные и типы данных - CodeMaster</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -347,69 +347,6 @@
             margin-bottom: 0;
         }
 
-        /* Analogy Diagrams */
-        .analogy-diagram {
-            background: var(--bg-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-            border: 2px solid var(--border-color);
-        }
-
-        .diagram-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-            color: var(--accent-color);
-        }
-
-        .restaurant-analogy {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            text-align: center;
-        }
-
-        .analogy-step {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: var(--card-bg);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .analogy-step i {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            width: 40px;
-        }
-
-        .house-analogy {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .house-part {
-            text-align: center;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .house-icon {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-        }
-
         /* Code Preview */
         .code-preview {
             background: #1e1e1e;
@@ -427,104 +364,33 @@
         }
 
         .code-comment { color: #6a9955; }
-        .code-tag { color: #569cd6; }
-        .code-attribute { color: #9cdcfe; }
-        .code-value { color: #ce9178; }
+        .code-keyword { color: #569cd6; }
+        .code-string { color: #ce9178; }
+        .code-function { color: #dcdcaa; }
+        .code-include { color: #9cdcfe; }
+        .code-operator { color: #d4d4d4; }
+        .code-type { color: #4ec9b0; }
 
-        /* Learning Path */
-        .learning-path {
-            background: var(--gradient);
-            color: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin: 40px 0;
-        }
-
-        .learning-path h3 {
-            color: white;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .path-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .path-step {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-        }
-
-        .path-step.current {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .step-icon {
-            font-size: 1.3rem;
-            width: 30px;
-        }
-
-        /* Quick Quiz */
-        .quick-quiz {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 25px;
-            margin: 30px 0;
-            border: 2px solid var(--accent-color);
-        }
-
-        .quiz-title {
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .quiz-options {
-            display: grid;
-            gap: 10px;
-        }
-
-        .quiz-option {
-            padding: 15px;
+        /* Code Explanation */
+        .code-explanation {
             background: var(--bg-color);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-color);
         }
 
-        .quiz-option:hover {
-            border-color: var(--accent-color);
-            transform: translateX(5px);
-        }
-
-        /* Success Story */
-        .success-story {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px;
-            margin: 40px 0;
-            border-left: 5px solid var(--accent-color);
-        }
-
-        .success-story blockquote {
-            font-size: 1.1rem;
-            font-style: italic;
-            line-height: 1.6;
+        .code-line {
+            display: flex;
             margin-bottom: 15px;
+            gap: 15px;
+            align-items: flex-start;
         }
 
-        .success-story cite {
+        .line-number {
             color: var(--accent-color);
             font-weight: 600;
+            min-width: 30px;
         }
 
         /* Lesson Navigation */
@@ -671,10 +537,6 @@
                 padding: 25px;
             }
 
-            .house-analogy {
-                grid-template-columns: 1fr;
-            }
-
             .lesson-navigation {
                 flex-direction: column;
                 gap: 15px;
@@ -734,10 +596,10 @@
             <!-- Lesson Header -->
             <section class="lesson-header">
                 <div class="lesson-badge">
-                    <i class="fas fa-unlock"></i> БЕСПЛАТНЫЙ УРОК
+                    <i class="fas fa-book"></i> УРОК 1
                 </div>
-                <h1 class="lesson-title">Введение в веб-разработку</h1>
-                <p class="lesson-subtitle">Как устроен интернет и с чего начать свой путь в IT</p>
+                <h1 class="lesson-title">Переменные и типы данных</h1>
+                <p class="lesson-subtitle">Изучение переменных, типов данных, операций с переменными и работы с вводом/выводом</p>
                 
                 <div class="lesson-meta">
                     <div class="meta-item">
@@ -746,11 +608,11 @@
                     </div>
                     <div class="meta-item">
                         <div class="meta-label">Время</div>
-                        <div class="meta-value">45 минут</div>
+                        <div class="meta-value">90 минут</div>
                     </div>
                     <div class="meta-item">
                         <div class="meta-label">Урок</div>
-                        <div class="meta-value">0 из 30</div>
+                        <div class="meta-value">1 из 3</div>
                     </div>
                 </div>
             </section>
@@ -761,282 +623,283 @@
                 <div class="content-section">
                     <h2 class="section-title">
                         <i class="fas fa-play-circle"></i>
-                        Начало пути
+                        Что такое переменные?
                     </h2>
                     <p class="content-text">
-                        Вы открываете браузер, вводите адрес, и через долю секунды перед вами появляется красивый сайт. 
-                        Мы делаем это сотни раз в день, но редко задумываемся: а как это работает «под капотом»?
+                        Переменная — это именованная область памяти, в которой хранятся данные. Представьте переменную как коробку с наклейкой: 
+                        на наклейке написано имя (имя переменной), а внутри коробки лежат данные (значение переменной).
                     </p>
                     <p class="content-text">
-                        Если вы решили стать веб-разработчиком, поздравляю! Вы переходите из категории пользователей 
-                        в категорию создателей. В этом уроке мы разберем анатомию интернета и узнаем, из чего строятся 
-                        сайты, не написав пока ни строчки кода.
+                        В программировании переменные позволяют хранить и изменять данные в процессе выполнения программы. 
+                        Без переменных программы были бы статичными и не могли бы обрабатывать различную информацию.
                     </p>
                 </div>
 
-                <!-- How Internet Works -->
+                <!-- Data Types -->
                 <div class="content-section">
                     <h2 class="section-title">
-                        <i class="fas fa-globe"></i>
-                        1. Как работает Интернет: Простая модель
+                        <i class="fas fa-list"></i>
+                        Типы данных в C++
                     </h2>
                     <p class="content-text">
-                        Весь интернет работает по принципу диалога между двумя сторонами. 
-                        Представьте, что вы пришли в ресторан.
+                        В C++ каждая переменная имеет тип, который определяет, какие данные можно хранить в этой переменной и сколько памяти она занимает.
                     </p>
 
-                    <div class="analogy-diagram">
-                        <h3 class="diagram-title">Аналогия с рестораном</h3>
-                        <div class="restaurant-analogy">
-                            <div class="analogy-step">
-                                <i class="fas fa-user"></i>
-                                <div>
-                                    <strong>Вы (Клиент)</strong> — это ваш браузер (Chrome, Safari и др.). 
-                                    Вы смотрите меню и делаете заказ официанту. В мире веба это называется «Запрос».
-                                </div>
-                            </div>
-                            <i class="fas fa-arrow-down"></i>
-                            <div class="analogy-step">
-                                <i class="fas fa-utensils"></i>
-                                <div>
-                                    <strong>Кухня (Сервер)</strong> — это удаленный мощный компьютер, где хранятся файлы сайта. 
-                                    Повара получают заказ, нарезают салаты, жарят мясо. В мире веба сервер обрабатывает данные.
-                                </div>
-                            </div>
-                            <i class="fas fa-arrow-down"></i>
-                            <div class="analogy-step">
-                                <i class="fas fa-concierge-bell"></i>
-                                <div>
-                                    <strong>Блюдо (Сайт)</strong> — официант приносит вам готовое блюдо. 
-                                    Сервер отправляет вашему браузеру набор файлов, который превращается в картинку на экране.
-                                </div>
-                            </div>
-                        </div>
+                    <h3 style="margin: 25px 0 15px; color: var(--accent-color);">Основные типы данных:</h3>
+
+                    <div class="code-preview">
+                        <pre><code><span class="code-comment">// Целые числа</span>
+<span class="code-type">int</span> age = <span class="code-operator">25</span>;              <span class="code-comment">// Целое число (обычно 4 байта)</span>
+<span class="code-type">long</span> bigNumber = <span class="code-operator">1000000</span>;   <span class="code-comment">// Длинное целое число</span>
+<span class="code-type">short</span> smallNumber = <span class="code-operator">100</span>;   <span class="code-comment">// Короткое целое число</span>
+
+<span class="code-comment">// Дробные числа</span>
+<span class="code-type">float</span> price = <span class="code-operator">19.99</span>;        <span class="code-comment">// Число с плавающей точкой (4 байта)</span>
+<span class="code-type">double</span> pi = <span class="code-operator">3.14159</span>;        <span class="code-comment">// Число с двойной точностью (8 байт)</span>
+
+<span class="code-comment">// Символы и строки</span>
+<span class="code-type">char</span> letter = <span class="code-string">'A'</span>;           <span class="code-comment">// Один символ</span>
+<span class="code-type">string</span> name = <span class="code-string">"Иван"</span>;        <span class="code-comment">// Строка символов</span>
+
+<span class="code-comment">// Логический тип</span>
+<span class="code-type">bool</span> isStudent = <span class="code-keyword">true</span>;      <span class="code-comment">// true или false</span></code></pre>
                     </div>
-
-                    <p class="content-text">
-                        Веб-разработчик — это человек, который либо составляет рецепты и оформляет блюда (Frontend), 
-                        либо настраивает работу кухни и оборудования (Backend).
-                    </p>
                 </div>
 
-                <!-- Three Pillars -->
+                <!-- Declaration and Initialization -->
                 <div class="content-section">
                     <h2 class="section-title">
-                        <i class="fas fa-home"></i>
-                        2. Три кита веб-страницы
+                        <i class="fas fa-edit"></i>
+                        Объявление и инициализация переменных
                     </h2>
                     <p class="content-text">
-                        Любой сайт, от простой визитки до Facebook или YouTube, строится на трех базовых технологиях. 
-                        Давайте представим сайт как дом.
+                        В C++ переменную нужно сначала объявить (сообщить компилятору о её существовании), а затем можно присвоить ей значение.
                     </p>
 
-                    <div class="house-analogy">
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-cube"></i>
-                            </div>
-                            <h3>HTML</h3>
-                            <p><strong>HyperText Markup Language</strong> — Это Каркас дома. Бетонные плиты, балки, кирпичные стены.</p>
-                            <ul style="text-align: left; margin-top: 10px;">
-                                <li>Отвечает за структуру</li>
-                                <li>Определяет заголовки, картинки, кнопки</li>
-                                <li>Без HTML сайта не существует</li>
-                            </ul>
-                        </div>
+                    <div class="code-preview">
+                        <pre><code><span class="code-comment">// Способ 1: Объявление и инициализация одновременно</span>
+<span class="code-type">int</span> number = <span class="code-operator">10</span>;
 
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-paint-brush"></i>
-                            </div>
-                            <h3>CSS</h3>
-                            <p><strong>Cascading Style Sheets</strong> — Это Ремонт и Дизайн. Обои, покраска, мебель.</p>
-                            <ul style="text-align: left; margin-top: 10px;">
-                                <li>Отвечает за внешний вид</li>
-                                <li>Цвета, расположение, шрифты</li>
-                                <li>Делает сайты красивыми</li>
-                            </ul>
-                        </div>
+<span class="code-comment">// Способ 2: Сначала объявление, потом присваивание</span>
+<span class="code-type">int</span> number;
+number = <span class="code-operator">10</span>;
 
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h3>JavaScript</h3>
-                            <p><strong>JS</strong> — Это Коммуникации. Электричество, лифт, автоматические ворота.</p>
-                            <ul style="text-align: left; margin-top: 10px;">
-                                <li>Оживляет сайт</li>
-                                <li>Взаимодействие и анимация</li>
-                                <li>Лайки, сообщения, формы</li>
-                            </ul>
-                        </div>
+<span class="code-comment">// Способ 3: Инициализация при объявлении (современный стиль C++)</span>
+<span class="code-type">int</span> number{<span class="code-operator">10</span>};</code></pre>
+                    </div>
+
+                    <div class="code-explanation">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-color);">Важно:</h4>
+                        <p>В C++ переменные не инициализируются автоматически. Если вы объявите переменную без присваивания значения, 
+                        она будет содержать "мусор" — случайные данные из памяти. Всегда инициализируйте переменные!</p>
                     </div>
                 </div>
 
-                <!-- Tools -->
+                <!-- Naming Rules -->
                 <div class="content-section">
                     <h2 class="section-title">
-                        <i class="fas fa-tools"></i>
-                        3. Ваш главный инструмент: Sublime Text
+                        <i class="fas fa-tag"></i>
+                        Правила именования переменных
                     </h2>
-                    <p class="content-text">
-                        Где пишут сайты? Можно, конечно, писать код в обычном «Блокноте» Windows, 
-                        но это всё равно что копать котлован ложкой — долго и неудобно.
-                    </p>
-                    <p class="content-text">
-                        Программисты используют специальные редакторы кода. Для старта мы рекомендуем Sublime Text.
-                    </p>
+                    <ul style="margin-left: 20px; line-height: 1.8; font-size: 1.1rem;">
+                        <li>Имя может содержать буквы, цифры и символ подчеркивания (_)</li>
+                        <li>Имя должно начинаться с буквы или подчеркивания</li>
+                        <li>Регистр букв имеет значение: <code>age</code> и <code>Age</code> — разные переменные</li>
+                        <li>Нельзя использовать зарезервированные слова (int, return, if и т.д.)</li>
+                        <li>Имя должно быть понятным и описывать назначение переменной</li>
+                    </ul>
 
-                    <div class="analogy-diagram">
-                        <h3 class="diagram-title">Почему именно Sublime Text?</h3>
-                        <div class="restaurant-analogy">
-                            <div class="analogy-step">
-                                <i class="fas fa-palette"></i>
-                                <div>
-                                    <strong>Подсветка синтаксиса</strong> — Редактор раскрашивает код разными цветами. 
-                                    Команды — одним цветом, текст — другим. Это помогает мгновенно видеть структуру и избегать ошибок.
-                                </div>
-                            </div>
-                            <div class="analogy-step">
-                                <i class="fas fa-magic"></i>
-                                <div>
-                                    <strong>Автодополнение</strong> — Вы начинаете писать команду, а редактор сам подсказывает окончание 
-                                    (как Т9, только умнее). Это ускоряет работу в разы.
-                                </div>
-                            </div>
-                            <div class="analogy-step">
-                                <i class="fas fa-bolt"></i>
-                                <div>
-                                    <strong>Легкость</strong> — Он запускается за долю секунды даже на слабых компьютерах.
-                                </div>
-                            </div>
-                        </div>
+                    <div class="code-preview" style="margin-top: 20px;">
+                        <pre><code><span class="code-comment">// Хорошие имена</span>
+<span class="code-type">int</span> studentAge = <span class="code-operator">20</span>;
+<span class="code-type">string</span> userName = <span class="code-string">"Иван"</span>;
+<span class="code-type">double</span> averageScore = <span class="code-operator">4.5</span>;
+
+<span class="code-comment">// Плохие имена (непонятные)</span>
+<span class="code-type">int</span> x = <span class="code-operator">20</span>;
+<span class="code-type">string</span> n = <span class="code-string">"Иван"</span>;
+<span class="code-type">double</span> as = <span class="code-operator">4.5</span>;</code></pre>
                     </div>
-
-                    <p class="content-text">
-                        <strong>Установка:</strong> Скачайте и установите редактор с официального сайта. 
-                        Он бесплатный для ознакомления (иногда будет всплывать окно с просьбой купить, но его можно просто закрыть).
-                    </p>
-
-                    <div style="text-align: center; margin: 25px 0;">
-                        <a href="https://www.sublimetext.com/" class="nav-btn" target="_blank">
-                            <i class="fas fa-download"></i> Скачать Sublime Text
-                        </a>
-                    </div>
-
-                    <p class="content-text">
-                        Установите его к следующему уроку — он нам понадобится!
-                    </p>
                 </div>
 
-                <!-- Career Path -->
+                <!-- Basic Operations -->
                 <div class="content-section">
                     <h2 class="section-title">
-                        <i class="fas fa-road"></i>
-                        4. Куда расти? Направления в веб-разработке
+                        <i class="fas fa-calculator"></i>
+                        Базовые операции с переменными
                     </h2>
                     <p class="content-text">
-                        Веб-разработка огромна. Когда вы освоите базу (HTML и CSS), перед вами откроются три пути:
+                        С переменными можно выполнять различные математические операции: сложение, вычитание, умножение, деление и другие.
                     </p>
 
-                    <div class="house-analogy">
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-palette"></i>
-                            </div>
-                            <h3>Frontend-разработчик</h3>
-                            <p>Вы создаете «лицо» сайта. Всё, что пользователь видит и на что кликает.</p>
-                            <p><strong>Для тех, кто любит визуальный результат и творчество.</strong></p>
-                        </div>
+                    <div class="code-preview">
+                        <pre><code><span class="code-include">#include &lt;iostream&gt;</span>
+<span class="code-keyword">using namespace</span> std;
 
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-server"></i>
-                            </div>
-                            <h3>Backend-разработчик</h3>
-                            <p>Вы работаете с «кухней». Базы данных, сервера, сложные вычисления.</p>
-                            <p><strong>Для тех, кто любит логику, алгоритмы и работу с данными.</strong></p>
-                        </div>
-
-                        <div class="house-part">
-                            <div class="house-icon">
-                                <i class="fas fa-layer-group"></i>
-                            </div>
-                            <h3>Fullstack-разработчик</h3>
-                            <p>Универсальный боец, который может создать сервис с нуля.</p>
-                            <p><strong>От верстки кнопки до настройки сервера.</strong></p>
-                        </div>
+<span class="code-type">int</span> <span class="code-function">main</span>() {
+    <span class="code-type">int</span> a = <span class="code-operator">10</span>;
+    <span class="code-type">int</span> b = <span class="code-operator">5</span>;
+    
+    <span class="code-comment">// Арифметические операции</span>
+    <span class="code-type">int</span> sum = a + b;        <span class="code-comment">// Сложение: 15</span>
+    <span class="code-type">int</span> diff = a - b;        <span class="code-comment">// Вычитание: 5</span>
+    <span class="code-type">int</span> product = a * b;     <span class="code-comment">// Умножение: 50</span>
+    <span class="code-type">int</span> quotient = a / b;    <span class="code-comment">// Деление: 2</span>
+    <span class="code-type">int</span> remainder = a % b;   <span class="code-comment">// Остаток от деления: 0</span>
+    
+    <span class="code-comment">// Сокращенные операции</span>
+    a += <span class="code-operator">5</span>;  <span class="code-comment">// То же, что a = a + 5</span>
+    a -= <span class="code-operator">3</span>;  <span class="code-comment">// То же, что a = a - 3</span>
+    a *= <span class="code-operator">2</span>;  <span class="code-comment">// То же, что a = a * 2</span>
+    a /= <span class="code-operator">2</span>;  <span class="code-comment">// То же, что a = a / 2</span>
+    
+    <span class="code-comment">// Инкремент и декремент</span>
+    a++;  <span class="code-comment">// Увеличить на 1 (постфиксная форма)</span>
+    ++a;  <span class="code-comment">// Увеличить на 1 (префиксная форма)</span>
+    a--;  <span class="code-comment">// Уменьшить на 1</span>
+    
+    <span class="code-keyword">return</span> <span class="code-operator">0</span>;
+}</code></pre>
                     </div>
                 </div>
 
-                <!-- Learning Path -->
-                <div class="learning-path">
-                    <h3>🚀 Ваш путь в веб-разработке</h3>
-                    <div class="path-steps">
-                        <div class="path-step current">
-                            <div class="step-icon">✅</div>
-                            <div>
-                                <strong>Сейчас:</strong> Понимание основ интернета и веб-технологий
-                            </div>
-                        </div>
-                        <div class="path-step">
-                            <div class="step-icon">➡️</div>
-                            <div>
-                                <strong>Следующий урок:</strong> Ваша первая HTML-страница
-                            </div>
-                        </div>
-                        <div class="path-step">
-                            <div class="step-icon">➡️</div>
-                            <div>
-                                <strong>Через 2 недели:</strong> Стилизация с помощью CSS
-                            </div>
-                        </div>
-                        <div class="path-step">
-                            <div class="step-icon">➡️</div>
-                            <div>
-                                <strong>Через 1 месяц:</strong> Интерактивность на JavaScript
-                            </div>
-                        </div>
-                        <div class="path-step">
-                            <div class="step-icon">➡️</div>
-                            <div>
-                                <strong>Через 3 месяца:</strong> Ваш первый реальный проект
-                            </div>
-                        </div>
+                <!-- Input/Output -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-keyboard"></i>
+                        Ввод и вывод данных
+                    </h2>
+                    <p class="content-text">
+                        Для работы с вводом и выводом данных в C++ используется библиотека <code>iostream</code>. 
+                        Мы уже использовали <code>cout</code> для вывода. Теперь изучим <code>cin</code> для ввода.
+                    </p>
+
+                    <div class="code-preview">
+                        <pre><code><span class="code-include">#include &lt;iostream&gt;</span>
+<span class="code-keyword">using namespace</span> std;
+
+<span class="code-type">int</span> <span class="code-function">main</span>() {
+    <span class="code-type">int</span> age;
+    <span class="code-type">string</span> name;
+    
+    <span class="code-comment">// Вывод текста</span>
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Введите ваше имя: "</span>;
+    
+    <span class="code-comment">// Ввод строки</span>
+    cin <span class="code-operator">&gt;&gt;</span> name;
+    
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Введите ваш возраст: "</span>;
+    
+    <span class="code-comment">// Ввод числа</span>
+    cin <span class="code-operator">&gt;&gt;</span> age;
+    
+    <span class="code-comment">// Вывод результата</span>
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Привет, "</span> <span class="code-operator">&lt;&lt;</span> name <span class="code-operator">&lt;&lt;</span> <span class="code-string">"! Тебе "</span> <span class="code-operator">&lt;&lt;</span> age <span class="code-operator">&lt;&lt;</span> <span class="code-string">" лет."</span> <span class="code-operator">&lt;&lt;</span> endl;
+    
+    <span class="code-keyword">return</span> <span class="code-operator">0</span>;
+}</code></pre>
+                    </div>
+
+                    <div class="code-explanation">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-color);">Объяснение:</h4>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li><strong>cout</strong> (console output) — используется для вывода данных на экран</li>
+                            <li><strong>cin</strong> (console input) — используется для ввода данных с клавиатуры</li>
+                            <li><strong>&lt;&lt;</strong> — оператор вывода (направление данных в поток)</li>
+                            <li><strong>&gt;&gt;</strong> — оператор ввода (направление данных из потока в переменную)</li>
+                            <li><strong>endl</strong> — переводит курсор на новую строку</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Success Story -->
-                <div class="success-story">
-                    <blockquote>
-                        "Я начал с такого же вводного урока 2 года назад. Не верил, что смогу, 
-                        но последовал инструкциям и не пропускал занятия. Сегодня работаю в IT-компании 
-                        и создаю продукты для тысяч пользователей! Помните: каждый эксперт когда-то был новичком."
-                    </blockquote>
-                    <cite>- Алексей, выпускник CodeMaster</cite>
+                <!-- Practical Example -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-code"></i>
+                        Практический пример
+                    </h2>
+                    <p class="content-text">
+                        Давайте создадим программу, которая вычисляет площадь прямоугольника:
+                    </p>
+
+                    <div class="code-preview">
+                        <pre><code><span class="code-include">#include &lt;iostream&gt;</span>
+<span class="code-keyword">using namespace</span> std;
+
+<span class="code-type">int</span> <span class="code-function">main</span>() {
+    <span class="code-type">double</span> width, height, area;
+    
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Введите ширину прямоугольника: "</span>;
+    cin <span class="code-operator">&gt;&gt;</span> width;
+    
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Введите высоту прямоугольника: "</span>;
+    cin <span class="code-operator">&gt;&gt;</span> height;
+    
+    <span class="code-comment">// Вычисление площади</span>
+    area = width * height;
+    
+    cout <span class="code-operator">&lt;&lt;</span> <span class="code-string">"Площадь прямоугольника: "</span> <span class="code-operator">&lt;&lt;</span> area <span class="code-operator">&lt;&lt;</span> endl;
+    
+    <span class="code-keyword">return</span> <span class="code-operator">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Common Mistakes -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Частые ошибки
+                    </h2>
+                    <ul style="margin-left: 20px; line-height: 1.8; font-size: 1.1rem;">
+                        <li><strong>Неинициализированные переменные:</strong> Всегда присваивайте начальное значение</li>
+                        <li><strong>Неправильный тип данных:</strong> Не пытайтесь хранить дробное число в переменной типа <code>int</code></li>
+                        <li><strong>Деление на ноль:</strong> Проверяйте делитель перед делением</li>
+                        <li><strong>Путаница с операторами:</strong> Помните, что <code>=</code> — это присваивание, а не сравнение</li>
+                        <li><strong>Забыли точку с запятой:</strong> Каждая команда должна заканчиваться <code>;</code></li>
+                    </ul>
+                </div>
+
+                <!-- Best Practices -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Лучшие практики
+                    </h2>
+                    <ul style="margin-left: 20px; line-height: 1.8; font-size: 1.1rem;">
+                        <li>Используйте понятные имена переменных</li>
+                        <li>Всегда инициализируйте переменные при объявлении</li>
+                        <li>Выбирайте правильный тип данных для вашей задачи</li>
+                        <li>Используйте <code>const</code> для переменных, которые не должны изменяться</li>
+                        <li>Комментируйте сложные вычисления</li>
+                    </ul>
                 </div>
 
                 <!-- Conclusion -->
                 <div class="content-section">
                     <h2 class="section-title">
                         <i class="fas fa-flag-checkered"></i>
-                        Итог
+                        Итог урока
                     </h2>
                     <p class="content-text">
-                        Веб-разработка — это не магия, а конструктор. В следующем уроке мы откроем Sublime Text 
-                        и напишем свои первые строчки кода, создав вашу первую веб-страницу.
+                        Сегодня вы изучили основы работы с переменными в C++: типы данных, объявление, инициализацию, 
+                        операции и работу с вводом/выводом. Это фундаментальные знания, которые понадобятся вам в каждом программе.
+                    </p>
+                    <p class="content-text">
+                        <strong>Домашнее задание:</strong> Создайте программу, которая запрашивает у пользователя два числа 
+                        и выводит их сумму, разность, произведение и частное.
                     </p>
                     <p class="content-text" style="font-size: 1.2rem; font-weight: 600; color: var(--accent-color); text-align: center; margin-top: 30px;">
-                        Готовы? До встречи на следующем уроке!
+                        Отлично! Теперь вы умеете работать с переменными. В следующем уроке мы решим практические задачи для закрепления материала.
                     </p>
                 </div>
 
                 <!-- Lesson Navigation -->
                 <div class="lesson-navigation">
-                    <a href="webdev-course.html" class="nav-btn outline">
-                        <i class="fas fa-arrow-left"></i> Назад к курсу
+                    <a href="intro-cpp-lesson.html" class="nav-btn outline">
+                        <i class="fas fa-arrow-left"></i> Предыдущий урок
                     </a>
-                    <a href="html5-basics-lesson.html" class="nav-btn">
+                    <a href="problems-cpp-lesson.html" class="nav-btn">
                         Следующий урок <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -1064,7 +927,7 @@
                         <li><a href="cybersecurity-course.html">Кибербезопасность</a></li>
                         <li><a href="webdev-course.html">Веб-разработка</a></li>
                         <li><a href="python-course.html">Python</a></li>
-                        <li><a href="#">Мобильная разработка</a></li>
+                        <li><a href="cpp-course.html">C++ для начинающих</a></li>
                         <li><a href="courses.html">Все курсы</a></li>
                     </ul>
                 </div>
@@ -1170,49 +1033,7 @@
                 });
             });
         }
-        
-        // Анимация появления элементов при скролле
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        // Наблюдаем за секциями контента
-        document.querySelectorAll('.content-section, .learning-path, .success-story').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(section);
-        });
-
-        // Простая викторина
-        document.querySelectorAll('.quiz-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const answer = this.getAttribute('data-answer');
-                if (answer === 'structure') {
-                    this.style.backgroundColor = '#2ecc71';
-                    this.style.color = 'white';
-                    setTimeout(() => {
-                        alert('Правильно! HTML действительно строит каркас сайта, как фундамент и стены дома.');
-                    }, 300);
-                } else {
-                    this.style.backgroundColor = '#e74c3c';
-                    this.style.color = 'white';
-                    setTimeout(() => {
-                        alert('Попробуйте еще раз! Вспомните аналогию с домом.');
-                    }, 300);
-                }
-            });
-        });
     </script>
 </body>
 </html>
+

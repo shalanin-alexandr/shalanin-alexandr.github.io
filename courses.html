@@ -976,55 +976,73 @@
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         
-        // Проверяем сохраненную тему в localStorage
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', savedTheme);
+        // Функция для применения темы
+        function applyTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
         
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
+        // Функция для применения акцентного цвета
+        function applyAccent(accent) {
+            body.setAttribute('data-accent', accent);
+            document.documentElement.setAttribute('data-accent', accent);
+            localStorage.setItem('accent', accent);
+        }
+        
+        // Проверяем сохраненную тему в localStorage и применяем
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        applyTheme(savedTheme);
+        applyAccent(savedAccent);
+        
+        // Обработчик переключения темы
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = body.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+            });
+        }
         
         // Переключение акцентного цвета
         const accentToggle = document.getElementById('accentToggle');
         const accentColors = document.getElementById('accentColors');
         const accentColorElements = document.querySelectorAll('.accent-color');
         
-        // Проверяем сохраненный цвет в localStorage
-        const savedAccent = localStorage.getItem('accent') || 'blue';
-        body.setAttribute('data-accent', savedAccent);
-        updateActiveAccent(savedAccent);
-        
-        accentToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            accentColors.classList.toggle('show');
-        });
-        
-        // Закрываем палитру при клике вне её
-        document.addEventListener('click', () => {
-            accentColors.classList.remove('show');
-        });
-        
-        accentColorElements.forEach(colorElement => {
-            colorElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const color = colorElement.getAttribute('data-color');
-                body.setAttribute('data-accent', color);
-                localStorage.setItem('accent', color);
-                updateActiveAccent(color);
-                accentColors.classList.remove('show');
-            });
-        });
-        
+        // Обновляем активный акцентный цвет
         function updateActiveAccent(color) {
             accentColorElements.forEach(element => {
                 element.classList.remove('active');
                 if (element.getAttribute('data-color') === color) {
                     element.classList.add('active');
                 }
+            });
+        }
+        
+        updateActiveAccent(savedAccent);
+        
+        if (accentToggle && accentColors) {
+            accentToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accentColors.classList.toggle('show');
+            });
+            
+            // Закрываем палитру при клике вне её
+            document.addEventListener('click', (e) => {
+                if (!accentToggle.contains(e.target) && !accentColors.contains(e.target)) {
+                    accentColors.classList.remove('show');
+                }
+            });
+            
+            accentColorElements.forEach(colorElement => {
+                colorElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const color = colorElement.getAttribute('data-color');
+                    applyAccent(color);
+                    updateActiveAccent(color);
+                    accentColors.classList.remove('show');
+                });
             });
         }
         

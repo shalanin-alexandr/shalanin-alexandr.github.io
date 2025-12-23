@@ -1150,43 +1150,36 @@
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', savedTheme);
+        // Функция для применения темы
+        function applyTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
         
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
+        // Функция для применения акцентного цвета
+        function applyAccent(accent) {
+            body.setAttribute('data-accent', accent);
+            document.documentElement.setAttribute('data-accent', accent);
+            localStorage.setItem('accent', accent);
+        }
+        
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedAccent = localStorage.getItem('accent') || 'blue';
+        applyTheme(savedTheme);
+        applyAccent(savedAccent);
+        
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = body.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+            });
+        }
         
         const accentToggle = document.getElementById('accentToggle');
         const accentColors = document.getElementById('accentColors');
         const accentColorElements = document.querySelectorAll('.accent-color');
-        
-        const savedAccent = localStorage.getItem('accent') || 'blue';
-        body.setAttribute('data-accent', savedAccent);
-        updateActiveAccent(savedAccent);
-        
-        accentToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            accentColors.classList.toggle('show');
-        });
-        
-        document.addEventListener('click', () => {
-            accentColors.classList.remove('show');
-        });
-        
-        accentColorElements.forEach(colorElement => {
-            colorElement.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const color = colorElement.getAttribute('data-color');
-                body.setAttribute('data-accent', color);
-                localStorage.setItem('accent', color);
-                updateActiveAccent(color);
-                accentColors.classList.remove('show');
-            });
-        });
         
         function updateActiveAccent(color) {
             accentColorElements.forEach(element => {
@@ -1194,6 +1187,31 @@
                 if (element.getAttribute('data-color') === color) {
                     element.classList.add('active');
                 }
+            });
+        }
+        
+        updateActiveAccent(savedAccent);
+        
+        if (accentToggle && accentColors) {
+            accentToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accentColors.classList.toggle('show');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!accentToggle.contains(e.target) && !accentColors.contains(e.target)) {
+                    accentColors.classList.remove('show');
+                }
+            });
+            
+            accentColorElements.forEach(colorElement => {
+                colorElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const color = colorElement.getAttribute('data-color');
+                    applyAccent(color);
+                    updateActiveAccent(color);
+                    accentColors.classList.remove('show');
+                });
             });
         }
 
