@@ -36,9 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentScroll = window.pageYOffset;
 
         if (currentScroll > 100) {
-            navbar.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
+            navbar.style.backgroundColor = 'rgba(250, 253, 249, 0.95)';
+            navbar.style.boxShadow = '0 2px 12px rgba(45, 134, 89, 0.08)';
         } else {
-            navbar.style.backgroundColor = 'rgba(10, 10, 10, 0.8)';
+            navbar.style.backgroundColor = 'rgba(250, 253, 249, 0.85)';
+            navbar.style.boxShadow = 'none';
         }
 
         lastScroll = currentScroll;
