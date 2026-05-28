@@ -277,8 +277,8 @@ section {
 }
 
 .screenshots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    display: flex;
+    justify-content: center;
     gap: 2rem;
 }
 
@@ -287,7 +287,8 @@ section {
     overflow: hidden;
     border: 1px solid var(--border);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    aspect-ratio: 16/10;
+    max-width: 400px;
+    width: 100%;
 }
 
 .screenshot-card:hover {
@@ -296,11 +297,11 @@ section {
     box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
 }
 
-.screenshot-card img {
+.screenshot-card video {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
+    object-fit: cover;
 }
 
 .benefits {
